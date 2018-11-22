@@ -29,7 +29,11 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -47,7 +51,7 @@ import com.example.database.Table;
 
 import static com.example.database.DBHelper.TAG;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
 	private final int REQUEST_PERMISSION = 1000;
 	private final int REQUEST_MULTI_PERMISSIONS = 101;
@@ -88,11 +92,17 @@ public class MainActivity extends Activity {
 			setContentView(R.layout.activity_main);
 
 			if (savedInstanceState == null) {
+				FragmentManager fragmentManager = getSupportFragmentManager();
+				if(fragmentManager != null) {
+					FragmentTransaction fragmentTransaction =
+							fragmentManager.beginTransaction();
+					TitleFragment titleFragment = new TitleFragment();
+					titleFragment.newInstances(dBHelper);
 
-				TitleFragment titleFragment = new TitleFragment();
-				titleFragment.newInstances(dBHelper);
-				getFragmentManager().beginTransaction()
-						.add(R.id.container, titleFragment).commit();
+					fragmentTransaction.addToBackStack(null);
+					fragmentTransaction.replace(R.id.container, titleFragment);
+					fragmentTransaction.commit();
+				}
 
 				/*
 
@@ -218,8 +228,12 @@ public class MainActivity extends Activity {
 
 				TitleFragment titleFragment = new TitleFragment();
 				titleFragment.newInstances(dBHelper);
-				getFragmentManager().beginTransaction()
-						.add(R.id.container, titleFragment).commit();
+				FragmentTransaction fragmentTransaction =
+						getSupportFragmentManager().beginTransaction();
+
+				fragmentTransaction.replace(R.id.container, titleFragment).commit();
+				fragmentTransaction.addToBackStack(null);
+				fragmentTransaction.commit();
 				/*
 				getFragmentManager().beginTransaction()
 						.add(R.id.container, new CameraFragment()).commit();
