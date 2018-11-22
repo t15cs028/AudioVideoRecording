@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.storyboard.StoryBoardFragment"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/newItem"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:text="new blocks"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/writeDown"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="65dp"
+            android:layout_marginBottom="0dp"
+            android:scrollbars="vertical" />
+
+        <Button
+            android:id="@+id/writeDown"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="0dp"
+            android:text="wirte Down movies"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+    <!--
+    <ListView
+        android:id="@+id/sample_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        -->
+</LinearLayout>

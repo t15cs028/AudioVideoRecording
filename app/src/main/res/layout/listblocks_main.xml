@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/block"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="74dp"
+    android:descendantFocusability="blocksDescendants" >
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="128dp"
+        android:layout_height="72dp"
+        android:background="@android:color/black"
+        android:padding="3dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="188dp"
+            android:layout_height="72dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toStartOf="@+id/recordButton"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:padding="15dp"
+            android:text="Sample Text"
+            android:textColor="#000" />
+
+        <ImageButton
+            android:id="@+id/recordButton"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+
+</LinearLayout>
