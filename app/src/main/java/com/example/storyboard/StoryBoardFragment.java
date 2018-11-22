@@ -1,15 +1,16 @@
 package com.example.storyboard;
 
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -238,10 +239,16 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
                 // BackStackを設定
                 fragmentTransaction.addToBackStack(null);
 
+                TabFragment tabFragment = new TabFragment();
+                tabFragment.newInstances(dbHelper, storyBoardNumber);
+                fragmentTransaction.replace(R.id.container, tabFragment);
+                fragmentTransaction.commit();
+                /*
                 CompositionFragment compositionFragment = new CompositionFragment();
                 compositionFragment.newInstances(dbHelper, storyBoardNumber);
                 fragmentTransaction.replace(R.id.container, compositionFragment);
                 fragmentTransaction.commit();
+                */
             }
         }
     };
