@@ -3,7 +3,7 @@ package com.example.database;
 import com.example.camera.R;
 
 public enum LayoutName {
-    LATTICE(Integer.valueOf(0), R.mipmap.lattice_land, R.mipmap.lattice_small),
+    LATTICE(Integer.valueOf(0), R.mipmap.lattice, R.mipmap.lattice_small),
     R_PERSON(Integer.valueOf(1), R.mipmap.right_person, R.mipmap.right_person_small),
     L_PERSON(Integer.valueOf(2), R.mipmap.left_person, R.mipmap.left_person_small);
 
