@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(final Bundle savedInstanceState) {
 
 
+
 		// アクションバーの非表示
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -93,16 +94,13 @@ public class MainActivity extends AppCompatActivity {
 
 			if (savedInstanceState == null) {
 				FragmentManager fragmentManager = getSupportFragmentManager();
-				if(fragmentManager != null) {
-					FragmentTransaction fragmentTransaction =
-							fragmentManager.beginTransaction();
-					TitleFragment titleFragment = new TitleFragment();
-					titleFragment.newInstances(dBHelper);
+				FragmentTransaction fragmentTransaction =
+						fragmentManager.beginTransaction();
+				TitleFragment titleFragment = new TitleFragment();
+				titleFragment.newInstances(dBHelper);
 
-					fragmentTransaction.addToBackStack(null);
-					fragmentTransaction.replace(R.id.container, titleFragment);
-					fragmentTransaction.commit();
-				}
+				fragmentTransaction.replace(R.id.container, titleFragment);
+				fragmentTransaction.commit();
 
 				/*
 
@@ -231,8 +229,7 @@ public class MainActivity extends AppCompatActivity {
 				FragmentTransaction fragmentTransaction =
 						getSupportFragmentManager().beginTransaction();
 
-				fragmentTransaction.replace(R.id.container, titleFragment).commit();
-				fragmentTransaction.addToBackStack(null);
+				fragmentTransaction.replace(R.id.container, titleFragment);
 				fragmentTransaction.commit();
 				/*
 				getFragmentManager().beginTransaction()

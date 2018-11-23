@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
  * AudioVideoRecordingSample
@@ -22,12 +23,12 @@
  * All files in the folder are under this Apache License, Version 2.0.
 */
 -->
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container"
     tools:context="com.example.MainActivity">
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>
 
