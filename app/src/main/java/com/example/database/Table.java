@@ -1,6 +1,8 @@
 package com.example.database;
 
-public enum Table {
+import java.io.Serializable;
+
+public enum Table implements Serializable {
     STORIES(Integer.valueOf(0), "stories"),
     STORY(Integer.valueOf(1), "story"),
     COMPOSITION(Integer.valueOf(2), "composition");

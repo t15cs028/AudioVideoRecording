@@ -28,15 +28,13 @@ public class MediaPlayFragment extends Fragment {
 
     }
 
-    public void newInstances(DBHelper dbHelper, Table table, int id){
-        this.dbHelper = dbHelper;
-        this.table = table;
-        this.id = id;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
+        table = (Table) args.getSerializable("Table");
+        id = args.getInt("StoryBoardNumber");
         setRetainInstance(true);
     }
 

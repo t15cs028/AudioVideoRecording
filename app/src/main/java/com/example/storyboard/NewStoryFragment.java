@@ -29,19 +29,17 @@ public class NewStoryFragment extends Fragment {
 
     private DBHelper dbHelper;
     private View rootView;
-    private ViewGroup container;
 
     public NewStoryFragment(){
 
     }
 
-    public void newInstances(DBHelper dbHelper){
-        this.dbHelper = dbHelper;
-    }
 
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
         setRetainInstance(true);
     }
 
@@ -49,7 +47,6 @@ public class NewStoryFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.newstory_main, container, false);
-        this.container = container;
         return rootView;
     }
 
@@ -95,7 +92,7 @@ public class NewStoryFragment extends Fragment {
                     else {
                         // テーブルに新しく挿入したデータのプライマリーキーを取得
                         String [] ids = dbHelper.getColumn(Table.STORIES, Stories.ID.getName(),
-                                Stories.DATE.getName(), "'" + date + "'");
+                                Stories.DATE.getName(), date);
 
                         int id = 0;
                         for(String s :ids){
@@ -110,7 +107,10 @@ public class NewStoryFragment extends Fragment {
                             // BackStackを設定
                             fragmentTransaction.addToBackStack(null);
                             CompositionFragment compositionFragment = new CompositionFragment();
-                            compositionFragment.newInstances(dbHelper, id);
+                            Bundle args = new Bundle();
+                            args.putSerializable("DBHelper", dbHelper);
+                            args.putInt("StoryBoardNumber", id);
+                            compositionFragment.setArguments(args);
                             fragmentTransaction.replace(R.id.container, compositionFragment);
                             fragmentTransaction.commit();
                         }

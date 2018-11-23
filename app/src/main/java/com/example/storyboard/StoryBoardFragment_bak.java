@@ -39,12 +39,6 @@ public class StoryBoardFragment_bak extends Fragment /*implements BlockListAdapt
 
     }
 
-    
-    public void newInstances(DBHelper dbHelpers, int num) {
-        this.dbHelper = dbHelpers;
-        storyBoardNumber = num;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -130,7 +124,10 @@ public class StoryBoardFragment_bak extends Fragment /*implements BlockListAdapt
                 fragmentTransaction.addToBackStack(null);
                 if(position == 0){
                     CompositionFragment compositionFragment = new CompositionFragment();
-                    compositionFragment.newInstances(dbHelper, storyBoardNumber);
+                    Bundle args = new Bundle();
+                    args.putSerializable("DBHelper", dbHelper);
+                    args.putInt("StoryBoardNumber", storyBoardNumber);
+                    compositionFragment.setArguments(args);
                     fragmentTransaction.replace(R.id.container, compositionFragment);
                 }
                 else {

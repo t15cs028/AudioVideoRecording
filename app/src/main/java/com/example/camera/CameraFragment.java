@@ -87,6 +87,10 @@ public class CameraFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle saveInstanceState){
 		super.onCreate(saveInstanceState);
+		Bundle args = getArguments();
+		dbHelper = (DBHelper) args.getSerializable("DBHelper");
+		id = args.getInt("id");
+		layoutID = args.getInt("layout");
 
 		// to avoid renewing fragment
 		setRetainInstance(true);

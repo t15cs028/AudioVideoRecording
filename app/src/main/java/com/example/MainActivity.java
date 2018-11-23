@@ -97,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
 				FragmentTransaction fragmentTransaction =
 						fragmentManager.beginTransaction();
 				TitleFragment titleFragment = new TitleFragment();
-				titleFragment.newInstances(dBHelper);
-
+				Bundle args = new Bundle();
+				args.putSerializable("DBHelper", dBHelper);
+				titleFragment.setArguments(args);
 				fragmentTransaction.replace(R.id.container, titleFragment);
 				fragmentTransaction.commit();
 
@@ -225,7 +226,9 @@ public class MainActivity extends AppCompatActivity {
 				setContentView(R.layout.activity_main);
 
 				TitleFragment titleFragment = new TitleFragment();
-				titleFragment.newInstances(dBHelper);
+				Bundle args = new Bundle();
+				args.putSerializable("DBHelper", dBHelper);
+				titleFragment.setArguments(args);
 				FragmentTransaction fragmentTransaction =
 						getSupportFragmentManager().beginTransaction();
 

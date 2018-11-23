@@ -64,14 +64,12 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
 
     }
 
-    public void newInstances(DBHelper dbHelpers, int num) {
-        this.dbHelper = dbHelpers;
-        storyBoardNumber = num;
-    }
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
+        storyBoardNumber = args.getInt("StoryBoardNumber");
         setRetainInstance(true);
     }
 
@@ -198,7 +196,11 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
             fragmentTransaction.addToBackStack(null);
 
             MediaPlayFragment mediaPlayFragment = new MediaPlayFragment();
-            mediaPlayFragment.newInstances(dbHelper, Table.STORY, Integer.parseInt(id));
+            Bundle args = new Bundle();
+            args.putSerializable("DBHelper", dbHelper);
+            args.putInt("StoryBoardNumber", storyBoardNumber);
+            args.putSerializable("Table", Table.STORIES);
+            mediaPlayFragment.setArguments(args);
             fragmentTransaction.replace(R.id.container, mediaPlayFragment);
             fragmentTransaction.commit();
         }
@@ -220,7 +222,14 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
             fragmentTransaction.addToBackStack(null);
 
             CameraFragment cameraFragment = new CameraFragment();
-            cameraFragment.newInstances(dbHelper, Integer.parseInt(id), Integer.parseInt(layout));
+
+            Bundle args = new Bundle();
+            args.putSerializable("DBHelper", dbHelper);
+            args.putInt("id", Integer.parseInt(id));
+            args.putInt("layout", Integer.parseInt(layout));
+
+            cameraFragment.setArguments(args);
+
             fragmentTransaction.replace(R.id.container, cameraFragment);
             fragmentTransaction.commit();
         }
@@ -239,16 +248,15 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
                 // BackStackを設定
                 fragmentTransaction.addToBackStack(null);
 
-                TabFragment tabFragment = new TabFragment();
-                tabFragment.newInstances(dbHelper, storyBoardNumber);
-                fragmentTransaction.replace(R.id.container, tabFragment);
-                fragmentTransaction.commit();
-                /*
                 CompositionFragment compositionFragment = new CompositionFragment();
-                compositionFragment.newInstances(dbHelper, storyBoardNumber);
+
+                Bundle args = new Bundle();
+                args.putSerializable("DBHelper", dbHelper);
+                args.putInt("StoryBoardNumber", storyBoardNumber);
+                compositionFragment.setArguments(args);
+
                 fragmentTransaction.replace(R.id.container, compositionFragment);
                 fragmentTransaction.commit();
-                */
             }
         }
     };
@@ -269,9 +277,15 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
                     // BackStackを設定
                     fragmentTransaction.addToBackStack(null);
 
-                    MediaPlayFragment mediPlayFragment = new MediaPlayFragment();
-                    mediPlayFragment.newInstances(dbHelper, Table.STORIES, storyBoardNumber);
-                    fragmentTransaction.replace(R.id.container, mediPlayFragment);
+                    MediaPlayFragment mediaPlayFragment = new MediaPlayFragment();
+
+                    Bundle args = new Bundle();
+                    args.putSerializable("DBHelper", dbHelper);
+                    args.putInt("StoryBoardNumber", storyBoardNumber);
+                    args.putSerializable("Table", Table.STORIES);
+                    mediaPlayFragment.setArguments(args);
+
+                    fragmentTransaction.replace(R.id.container, mediaPlayFragment);
                     fragmentTransaction.commit();
                 }
 

@@ -1,6 +1,5 @@
 package com.example.storyboard;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -37,13 +36,11 @@ public class StoryBoardsFragment extends Fragment {
 
     }
 
-    public void newInstances(DBHelper dbHelper){
-        this.dbHelper = dbHelper;
-    }
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
         setRetainInstance(true);
     }
 
@@ -107,8 +104,11 @@ public class StoryBoardsFragment extends Fragment {
                 fragmentTransaction.addToBackStack(null);
 
                 StoryBoardFragment storyBoardFragment = new StoryBoardFragment();
-                storyBoardFragment.newInstances(dbHelper, Integer.parseInt(storiesID[position]));
 
+                Bundle args = new Bundle();
+                args.putSerializable("DBHelper", dbHelper);
+                args.putInt("StoryBoardNumber", Integer.parseInt(storiesID[position]));
+                storyBoardFragment.setArguments(args);
                 fragmentTransaction.replace(R.id.container, storyBoardFragment);
                 fragmentTransaction.commit();
             }
@@ -121,13 +121,16 @@ public class StoryBoardsFragment extends Fragment {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
             final BlockDialogFragment dialog = new BlockDialogFragment();
+            Bundle args = new Bundle();
+            args.putSerializable("DBHelper", dbHelper);
+            dialog.setArguments(args);
             dialog.setTargetFragment(null, 100);
             /*
             Bundle bundle = new Bundle();
             bundle.putInt("aaa", 0);
             dialog.setArguments(bundle);
             */
-            // dialog.show(getChildFragmentManager(), "my_dialog");
+            dialog.show(getChildFragmentManager(), "my_dialog");
             return true;
         }
     };

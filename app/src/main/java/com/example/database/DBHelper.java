@@ -10,14 +10,14 @@ import android.os.Build;
 import com.example.camera.R;
 
 import java.io.File;
-import java.sql.Struct;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DBHelper {
+public class DBHelper implements Serializable {
 
     private int id = 0;
 
@@ -79,7 +79,6 @@ public class DBHelper {
                 "id", "三分割法",
                 "交点に被写体を配置するとバランスよく撮影することができます",
                 String.valueOf(R.mipmap.lattice),
-                String.valueOf(R.mipmap.lattice_land),
                 String.valueOf(R.mipmap.lattice_small),
                 Tag.OTHER.getName()
         };
@@ -88,8 +87,7 @@ public class DBHelper {
                 "id", "人物配置（右）",
                 "人が移動する方向や人の目線方向（左）に空間を持たせることで，"
                         + "水平方向に動きを持たせます",
-                String.valueOf(R.mipmap.right_person_land),
-                String.valueOf(R.mipmap.right_person_land),
+                String.valueOf(R.mipmap.right_person),
                 String.valueOf(R.mipmap.right_person_small),
                 Tag.PORTRAIT.getName()
         };
@@ -98,8 +96,7 @@ public class DBHelper {
                 "id", "人物配置（左）",
                 "人が移動する方向や人の目線方向（右）に空間を持たせることで，"
                         + "水平方向に動きを持たせます",
-                String.valueOf(R.mipmap.left_person_land),
-                String.valueOf(R.mipmap.left_person_land),
+                String.valueOf(R.mipmap.left_person),
                 String.valueOf(R.mipmap.left_person_small),
                 Tag.PORTRAIT.getName()
         };
@@ -108,9 +105,6 @@ public class DBHelper {
         for(int i = 0; i < datas.size(); i++){
             setRecord(Table.COMPOSITION, datas.get(i));
         }
-
-
-
     }
 
     public boolean setRecord(Table table, String[] str){
@@ -153,8 +147,7 @@ public class DBHelper {
                 values.put(Composition.FILE_ID.getName(), str[Composition.FILE_ID.getNumber()]);
                 values.put(Composition.THUMB_ID.getName(),
                         Integer.parseInt(str[Composition.THUMB_ID.getNumber()]));
-                values.put(Composition.TAG.getName(),
-                        Integer.parseInt(str[Composition.TAG.getNumber()]));
+                values.put(Composition.TAG.getName(), str[Composition.TAG.getNumber()]);
                 break;
         }
         db.insert(table.getName(), null, values);
@@ -298,7 +291,7 @@ public class DBHelper {
         int count = 0;
         String command
                 = "select count(*) from " + table.getName()
-                + " where " + conditionColumn + " = " + condition + ";";
+                + " where " + conditionColumn + " = \"" + condition + "\";";
         readDB();
         Cursor c = db.rawQuery(command, null);
         c.moveToFirst();
@@ -367,7 +360,7 @@ public class DBHelper {
 
         String command
                 = "select " + column + " from " + table.getName()
-                + " where " + conditionColumn + " = " + condition + ";";
+                + " where " + conditionColumn + " = \"" + condition + "\";";
 
         int count = getNumOfRecord(table, conditionColumn, condition);
 

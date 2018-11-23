@@ -30,13 +30,11 @@ public class TitleFragment extends Fragment {
 
     }
 
-    public void newInstances(DBHelper dbHelper){
-        this.dbHelper = dbHelper;
-    }
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
         setRetainInstance(true);
     }
 
@@ -74,15 +72,17 @@ public class TitleFragment extends Fragment {
                         // BackStackを設定
                         fragmentTransaction.addToBackStack(null);
 
+                        Bundle args = new Bundle();
+                        args.putSerializable("DBHelper", dbHelper);
                         switch (count){
                             case createStory:
                                 NewStoryFragment newStoryFragment = new NewStoryFragment();
-                                newStoryFragment.newInstances(dbHelper);
+                                newStoryFragment.setArguments(args);
                                 fragmentTransaction.replace(R.id.container, newStoryFragment);
                                 break;
                             case showStory:
                                 StoryBoardsFragment storyBoardsFragment = new StoryBoardsFragment();
-                                storyBoardsFragment.newInstances(dbHelper);
+                                storyBoardsFragment.setArguments(args);
                                 fragmentTransaction.replace(R.id.container, storyBoardsFragment);
                                 break;
 
