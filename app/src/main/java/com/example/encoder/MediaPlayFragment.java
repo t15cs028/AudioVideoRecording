@@ -68,7 +68,6 @@ public class MediaPlayFragment extends Fragment {
         }
 
         videoView.setVideoPath(url);
-        final MediaController mController = (MediaController) rootView.findViewById(R.id.controller);
         videoView.setMediaController(new MediaController(getActivity()));
         videoView.start();
 
