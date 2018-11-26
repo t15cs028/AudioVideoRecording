@@ -201,7 +201,7 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
             fragmentTransaction.addToBackStack(null);
 
             MediaPlayFragment mediaPlayFragment
-                    = MediaPlayFragment.newInstance(dbHelper, storyBoardNumber, Table.STORIES);
+                    = MediaPlayFragment.newInstance(dbHelper, Integer.parseInt(id), Table.STORY);
             fragmentTransaction.replace(R.id.container, mediaPlayFragment);
             fragmentTransaction.commit();
         }
