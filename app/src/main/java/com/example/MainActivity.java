@@ -23,24 +23,17 @@ package com.example;
  */
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -57,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
 	private final int REQUEST_MULTI_PERMISSIONS = 101;
 	private int auth = 0;
 
-	static private DBHelper dBHelper;
-
+	static private DBHelper dBHelper = null;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -87,8 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
 			super.onCreate(savedInstanceState);
 
-			createDataBase();
-			// deleteDataBase();
 
 			setContentView(R.layout.activity_main);
 
@@ -97,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
 				FragmentTransaction fragmentTransaction =
 						fragmentManager.beginTransaction();
 				TitleFragment titleFragment = new TitleFragment();
-				Bundle args = new Bundle();
-				args.putSerializable("DBHelper", dBHelper);
-				titleFragment.setArguments(args);
 				fragmentTransaction.replace(R.id.container, titleFragment);
 				fragmentTransaction.commit();
 
@@ -109,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
 						.add(R.id.container, new CameraFragment()).commit();
 
 				*/
+			}
+			else {
+				System.out.println("savedInstanceState = " + savedInstanceState);
+				dBHelper = (DBHelper) savedInstanceState.getSerializable("dbHelper");
 			}
 
 
@@ -220,9 +211,6 @@ public class MainActivity extends AppCompatActivity {
 			}
 			// 使用が許可された
 			if (auth == 0) {
-
-				createDataBase();
-
 				setContentView(R.layout.activity_main);
 
 				TitleFragment titleFragment = new TitleFragment();
@@ -275,28 +263,5 @@ public class MainActivity extends AppCompatActivity {
 		);
 	}
 	*/
-
-	public void createDataBase(){
-		dBHelper = null;
-		try {
-			dBHelper = new DBHelper(getApplicationContext());
-			if(dBHelper.getNumOfRecord(Table.COMPOSITION) == -1
-					|| dBHelper.getNumOfRecord(Table.COMPOSITION) == 0) {
-				dBHelper.setComposition();
-			}
-		} catch(Exception e) {
-			Log.d(TAG, e.getMessage());
-		}
-	}
-
-	public void deleteDataBase(){
-		try {
-			dBHelper = new DBHelper(getApplicationContext());
-			boolean result = dBHelper.isDatabaseDelete(getApplicationContext());
-			Log.d(TAG, " delete result : " + result);
-		} catch(Exception e) {
-			Log.d(TAG, e.getMessage());
-		}
-	}
 
 }
