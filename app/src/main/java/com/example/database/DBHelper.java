@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DBHelper implements Serializable {
+public class DBHelper{
 
     private int id = 0;
 
@@ -514,10 +514,19 @@ public class DBHelper implements Serializable {
         datas.add(str);
         str = new String [] {
                 "id", "求心的な構図",
-                "高い建物の頂上を中心としていくつかの放射状の線を感じることができる構図",
+                "高い建物の頂上を中心としていくつかの放射状の線を感じることができます",
                 String.valueOf(R.mipmap.centripetal),
-                String.valueOf(R.mipmap.centripetal_main),
+                String.valueOf(R.mipmap.centripetal_small),
                 Tag.BUILDING.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "S字構図",
+                "川や道，道路などのS字ラインを画面に組み込むことで，柔らかな感じをもたらすと共に"
+                        + "変化をもたらします",
+                String.valueOf(R.mipmap.s_curve),
+                String.valueOf(R.mipmap.s_curve_small),
+                Tag.SCENERY.getName()
         };
         datas.add(str);
 

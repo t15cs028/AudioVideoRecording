@@ -78,20 +78,17 @@ public class CameraFragment extends Fragment {
 	}
 
 
-	public void newInstances(DBHelper dbHelper, int id, int layoutID){
-		this.dbHelper = dbHelper;
-		this.id = id;
-		this.layoutID = layoutID;
+	public static CameraFragment newInstance(DBHelper dbHelper, int id, int layoutID){
+		CameraFragment fragment = new CameraFragment();
+		fragment.dbHelper = dbHelper;
+		fragment.id = id;
+		fragment.layoutID = layoutID;
+		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle saveInstanceState){
 		super.onCreate(saveInstanceState);
-		Bundle args = getArguments();
-		dbHelper = (DBHelper) args.getSerializable("DBHelper");
-		id = args.getInt("id");
-		layoutID = args.getInt("layout");
-
 		// to avoid renewing fragment
 		setRetainInstance(true);
 	}

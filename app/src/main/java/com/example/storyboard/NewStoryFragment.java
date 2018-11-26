@@ -30,6 +30,12 @@ public class NewStoryFragment extends Fragment {
     private DBHelper dbHelper;
     private View rootView;
 
+    public static NewStoryFragment newInstance(DBHelper dbHelper){
+        NewStoryFragment fragment = new NewStoryFragment();
+        fragment.dbHelper = dbHelper;
+        return fragment;
+    }
+
     public NewStoryFragment(){
 
     }
@@ -106,11 +112,7 @@ public class NewStoryFragment extends Fragment {
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             // BackStackを設定
                             fragmentTransaction.addToBackStack(null);
-                            CompositionFragment compositionFragment = new CompositionFragment();
-                            Bundle args = new Bundle();
-                            args.putSerializable("DBHelper", dbHelper);
-                            args.putInt("StoryBoardNumber", id);
-                            compositionFragment.setArguments(args);
+                            CompositionFragment compositionFragment = CompositionFragment.newInstance(dbHelper, id);
                             fragmentTransaction.replace(R.id.container, compositionFragment);
                             fragmentTransaction.commit();
                         }

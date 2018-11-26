@@ -21,8 +21,16 @@ public class MediaPlayFragment extends Fragment {
 
     private View rootView;
     private DBHelper dbHelper;
-    private Table table;
     private int id;
+    private Table table;
+
+    public static MediaPlayFragment newInstance(DBHelper dbHelper, int storyBoardNumber, Table table){
+        MediaPlayFragment fragment = new MediaPlayFragment();
+        fragment.dbHelper = dbHelper;
+        fragment.id = storyBoardNumber;
+        fragment.table = table;
+        return fragment;
+    }
 
     public MediaPlayFragment(){
 
@@ -31,10 +39,6 @@ public class MediaPlayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        dbHelper = (DBHelper) args.getSerializable("DBHelper");
-        table = (Table) args.getSerializable("Table");
-        id = args.getInt("StoryBoardNumber");
         setRetainInstance(true);
     }
 

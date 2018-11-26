@@ -1,6 +1,7 @@
 package com.example;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.camera.R;
+import com.example.database.Composition;
 import com.example.database.DBHelper;
 import com.example.database.Table;
+import com.example.database.Tag;
 import com.example.storyboard.NewStoryFragment;
 import com.example.storyboard.StoryBoardsFragment;
 
@@ -29,6 +32,12 @@ public class TitleFragment extends Fragment {
 
     private DBHelper dbHelper;
 
+    public static TitleFragment newInstance(DBHelper dbHelper){
+        TitleFragment fragment = new TitleFragment();
+        fragment.dbHelper = dbHelper;
+        return fragment;
+    }
+
     public TitleFragment(){
 
     }
@@ -36,7 +45,6 @@ public class TitleFragment extends Fragment {
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        createDataBase();
         setRetainInstance(true);
     }
 
@@ -44,6 +52,7 @@ public class TitleFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
 
+        System.out.println("Title : dbHelper = " + dbHelper);
         final View rootView = inflater.inflate(R.layout.menu_main, container, false);
         return rootView;
     }
@@ -63,6 +72,7 @@ public class TitleFragment extends Fragment {
             Next[] values = Next.values();
             final Next count = values[i];
             // final int count = i;
+
             button[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -74,17 +84,13 @@ public class TitleFragment extends Fragment {
                         // BackStackを設定
                         fragmentTransaction.addToBackStack(null);
 
-                        Bundle args = new Bundle();
-                        args.putSerializable("DBHelper", dbHelper);
                         switch (count){
                             case createStory:
-                                NewStoryFragment newStoryFragment = new NewStoryFragment();
-                                newStoryFragment.setArguments(args);
+                                NewStoryFragment newStoryFragment = NewStoryFragment.newInstance(dbHelper);
                                 fragmentTransaction.replace(R.id.container, newStoryFragment);
                                 break;
                             case showStory:
-                                StoryBoardsFragment storyBoardsFragment = new StoryBoardsFragment();
-                                storyBoardsFragment.setArguments(args);
+                                StoryBoardsFragment storyBoardsFragment = StoryBoardsFragment.newInstance(dbHelper);
                                 fragmentTransaction.replace(R.id.container, storyBoardsFragment);
                                 break;
 
@@ -119,26 +125,6 @@ public class TitleFragment extends Fragment {
     };
     */
 
-    public void createDataBase(){
-        try {
-            dbHelper = new DBHelper(getActivity().getApplicationContext());
-            if(dbHelper.getNumOfRecord(Table.COMPOSITION) == -1
-                    || dbHelper.getNumOfRecord(Table.COMPOSITION) == 0) {
-                dbHelper.setComposition();
-            }
-        } catch(Exception e) {
-            Log.d(TAG, e.getMessage());
-        }
-    }
 
-    public void deleteDataBase(){
-        try {
-            dbHelper = new DBHelper(getActivity().getApplicationContext());
-            boolean result = dbHelper.isDatabaseDelete(getActivity().getApplicationContext());
-            Log.d(TAG, " delete result : " + result);
-        } catch(Exception e) {
-            Log.d(TAG, e.getMessage());
-        }
-    }
 
 }

@@ -19,6 +19,12 @@ public class BlockDialogFragment extends DialogFragment {
     private DBHelper dbHelper;
     private Table table;
 
+    public static BlockDialogFragment newInstance(DBHelper dbHelper){
+        BlockDialogFragment fragment = new BlockDialogFragment();
+        fragment.dbHelper = dbHelper;
+        return fragment;
+    }
+
     public BlockDialogFragment(){
 
     }
@@ -26,8 +32,6 @@ public class BlockDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        Bundle args = getArguments();
-        dbHelper = (DBHelper) args.getSerializable("DBHelper");
         setRetainInstance(true);
     }
 
