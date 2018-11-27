@@ -44,12 +44,13 @@ public class TabPageFragment extends Fragment {
         //addTabの際にBundleを渡す場合は、Bundleから値を取得する
         //渡さない(nullを渡している)場合は、実装しなくてよい。そうでないとgetString("string")時にエラーが発生する
         Bundle args = getArguments();
-        dbHelper = (DBHelper) args.getSerializable("DBHelper");
+        dbHelper = new DBHelper(getActivity().getApplicationContext());
         storyBoardNumber = args.getInt("StoryBoardNumber");
         tag = args.getString("Tag");
         setRetainInstance(true);
-
     }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){

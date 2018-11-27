@@ -27,12 +27,24 @@ public class DetailSettingFragment extends Fragment {
     private int storyBoardNumber;
     private int compositionID;
     private View rootView;
+    private int blockID = -1;
 
-    public static DetailSettingFragment newInstance(DBHelper dbHelper, int storyBoardNumber, int compositionID){
+    public static DetailSettingFragment
+    newInstance(DBHelper dbHelper, int storyBoardNumber, int compositionID){
         DetailSettingFragment fragment = new DetailSettingFragment();
         fragment.dbHelper = dbHelper;
         fragment.storyBoardNumber = storyBoardNumber;
         fragment.compositionID = compositionID;
+        return fragment;
+    }
+
+    public static DetailSettingFragment
+    newInstance(DBHelper dbHelper, int storyBoardNumber, int compositionID, int blockID){
+        DetailSettingFragment fragment = new DetailSettingFragment();
+        fragment.dbHelper = dbHelper;
+        fragment.storyBoardNumber = storyBoardNumber;
+        fragment.compositionID = compositionID;
+        fragment.blockID = blockID;
         return fragment;
     }
 
@@ -77,69 +89,77 @@ public class DetailSettingFragment extends Fragment {
         final EditText desc = (EditText) view.findViewById(R.id.description);
 
 
-        button.setOnClickListener(new View.OnClickListener(){
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                SpannableStringBuilder [] sb =
+                SpannableStringBuilder[] sb =
                         new SpannableStringBuilder[]{
                                 (SpannableStringBuilder) name.getText(),
                                 (SpannableStringBuilder) desc.getText()
                         };
 
+                if (blockID == -1) {
+                    int order = dbHelper.getNumOfRecord(Table.STORY,
+                            Story.STORIES_ID.getName(), String.valueOf(storyBoardNumber));
 
-                int order = dbHelper.getNumOfRecord(Table.STORY,
-                        Story.STORIES_ID.getName(), String.valueOf(storyBoardNumber));
+                    String[] str =
+                            new String[]{
+                                    "id", String.valueOf(order),
+                                    sb[0].toString(), String.valueOf(compositionID),
+                                    sb[1].toString(), URL, String.valueOf(storyBoardNumber)
+                            };
 
-                String [] str =
-                        new String[]{
-                                "id", String.valueOf(order),
-                                sb[0].toString(), String.valueOf(compositionID),
-                                sb[1].toString(), URL, String.valueOf(storyBoardNumber)
-                        };
-
-                // 名前の入力なし
-                if (sb[0].toString().length() == 0 || sb[1].toString().length() == 0) {
-                    showError("Please input name!");
-                }
-
-                /*
-                // 既に名前が存在する
-                else if(dbHelper.existStoryName(str)) {
-                    showError("This name Story exist. Try again other name...");
-                }
-                */
-
-                else {
-                    // データをセットする
-                    // 登録時にエラーが起きた
-                    if(!dbHelper.setRecord(Table.STORY, str)){
-                        showError("error : Please try again...");
+                    // 名前の入力なし
+                    if (sb[0].toString().length() == 0 || sb[1].toString().length() == 0) {
+                        showError("Please input name!");
                     }
-                    // 登録が成功した
+
                     else {
-                        FragmentManager fragmentManager = getFragmentManager();
+                        // データをセットする
+                        // 登録時にエラーが起きた
+                        if (!dbHelper.setRecord(Table.STORY, str)) {
+                            showError("error : Please try again...");
+                        }
+                        // 登録が成功した
+                        else {
+                            FragmentManager fragmentManager = getFragmentManager();
 
-                        if (fragmentManager != null) {
-                            // 1つ前の画面（絵コンテ）に戻る
-                            fragmentManager.popBackStack();
-                            fragmentManager.popBackStack();
+                            if (fragmentManager != null) {
+                                // 1つ前の画面（絵コンテ）に戻る
+                                fragmentManager.popBackStack();
+                                fragmentManager.popBackStack();
 
 
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            // BackStackを設定
-                            fragmentTransaction.addToBackStack(null);
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                // BackStackを設定
+                                fragmentTransaction.addToBackStack(null);
 
-                            CompositionFragment compositionFragment
-                                    = CompositionFragment.newInstance(dbHelper, storyBoardNumber);
+                                CompositionFragment compositionFragment
+                                        = CompositionFragment.newInstance(dbHelper, storyBoardNumber);
 
-                            fragmentTransaction.replace(R.id.container, compositionFragment);
-                            fragmentTransaction.commit();
+                                fragmentTransaction.replace(R.id.container, compositionFragment);
+                                fragmentTransaction.commit();
 
+                            }
                         }
                     }
-                }
+                } else {
+                    dbHelper.setField(
+                            Table.STORY, String.valueOf(blockID),
+                            Story.NAME.getName(), sb[0].toString()
+                    );
+                    dbHelper.setField(
+                            Table.STORY, String.valueOf(blockID),
+                            Story.DESCRIPTION.getName(), sb[1].toString()
+                    );
+                    FragmentManager fragmentManager = getFragmentManager();
 
+                    if (fragmentManager != null) {
+                        // 1つ前の画面（絵コンテ）に戻る
+                        fragmentManager.popBackStack();
+                    }
+                }
             }
         });
     }

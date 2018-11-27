@@ -108,7 +108,6 @@ public class VideoExport extends AsyncTaskLoader<Boolean> {
 
             // 出力
             Container out = new DefaultMp4Builder().build(result);
-            System.out.println("output");
 
             String storyName = dbHelper.getColumn(
                     Table.STORIES, Stories.NAME.getName(),
@@ -117,11 +116,8 @@ public class VideoExport extends AsyncTaskLoader<Boolean> {
             outputFilePath
                     = Environment.getExternalStorageDirectory() + "/"
                     + DIR_NAME + "/" + storyName + "/" + storyName + "_movie.mp4";
-            System.out.println("output path = " + outputFilePath);
             FileOutputStream fos = new FileOutputStream(new File(outputFilePath));
-            System.out.println("path");
             out.writeContainer(fos.getChannel());
-            System.out.println("write");
             fos.close();
         } catch (Exception e) {
             return false;

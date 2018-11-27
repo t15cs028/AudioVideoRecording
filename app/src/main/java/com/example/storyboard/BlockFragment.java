@@ -65,8 +65,8 @@ public void onActivityCreated(Bundle savedInstanceState) {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String record [] = dbHelper.getRecord(Table.STORY, String.valueOf(blockID));
-        int compositionID = Integer.parseInt(dbHelper.getColumn(
+        final String record [] = dbHelper.getRecord(Table.STORY, String.valueOf(blockID));
+        final int compositionID = Integer.parseInt(dbHelper.getColumn(
                 Table.COMPOSITION, Composition.THUMB_ID.getName(),
                 Composition.ID.getName(), record[Story.COMPOSITION_ID.getNumber()]
         )[0]);
@@ -85,7 +85,24 @@ public void onActivityCreated(Bundle savedInstanceState) {
         modify.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                FragmentManager fragmentManager = getFragmentManager();
 
+                if (fragmentManager != null) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    // BackStackを設定
+                    fragmentTransaction.addToBackStack(null);
+
+                    DetailSettingFragment detailSettingFragment
+                            = DetailSettingFragment.newInstance(
+                                    dbHelper, storyBoardNumber,
+                            Integer.parseInt(record[Story.COMPOSITION_ID.getNumber()]),
+                            Integer.parseInt(record[Story.ID.getNumber()])
+                    );
+
+                    fragmentTransaction.replace(R.id.container, detailSettingFragment);
+                    fragmentTransaction.commit();
+
+                }
             }
         });
     }
