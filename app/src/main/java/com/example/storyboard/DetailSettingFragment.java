@@ -49,7 +49,7 @@ public class DetailSettingFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.detailblock_main, container, false);
+        rootView = inflater.inflate(R.layout.detailsetting_main, container, false);
         return rootView;
     }
 

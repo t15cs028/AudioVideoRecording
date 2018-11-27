@@ -193,16 +193,23 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
     public void onRecyclerClicked(View v, int position){
         Log.d(TAG, "onListItemClick position => " + position);
         String id = setData()[position].id;
-        System.out.println(Integer.parseInt(id));
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             // BackStackを設定
             fragmentTransaction.addToBackStack(null);
 
-            MediaPlayFragment mediaPlayFragment
-                    = MediaPlayFragment.newInstance(dbHelper, Integer.parseInt(id), Table.STORY);
-            fragmentTransaction.replace(R.id.container, mediaPlayFragment);
+            String path = setData()[position].url;
+            if(path.equals("new")){
+                BlockFragment fragment
+                        = BlockFragment.newInstance(dbHelper, storyBoardNumber, Integer.parseInt(id));
+                fragmentTransaction.replace(R.id.container, fragment);
+            }
+            else {
+                MediaPlayFragment fragment
+                        = MediaPlayFragment.newInstance(dbHelper, Integer.parseInt(id), Table.STORY);
+                fragmentTransaction.replace(R.id.container, fragment);
+            }
             fragmentTransaction.commit();
         }
     }
