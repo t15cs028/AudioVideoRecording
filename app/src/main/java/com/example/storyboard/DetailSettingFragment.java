@@ -1,8 +1,5 @@
 package com.example.storyboard;
 
-import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,22 +21,22 @@ import com.example.database.Table;
 
 import static com.example.database.DBHelper.URL;
 
-public class DetailBlockFragment extends Fragment {
+public class DetailSettingFragment extends Fragment {
 
     private DBHelper dbHelper;
     private int storyBoardNumber;
     private int compositionID;
     private View rootView;
 
-    public static DetailBlockFragment newInstance(DBHelper dbHelper, int storyBoardNumber, int compositionID){
-        DetailBlockFragment fragment = new DetailBlockFragment();
+    public static DetailSettingFragment newInstance(DBHelper dbHelper, int storyBoardNumber, int compositionID){
+        DetailSettingFragment fragment = new DetailSettingFragment();
         fragment.dbHelper = dbHelper;
         fragment.storyBoardNumber = storyBoardNumber;
         fragment.compositionID = compositionID;
         return fragment;
     }
 
-    public DetailBlockFragment(){
+    public DetailSettingFragment(){
 
     }
 

@@ -19,7 +19,6 @@ import com.example.database.Composition;
 import com.example.database.DBHelper;
 import com.example.database.Table;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import static com.example.database.DBHelper.TAG;
@@ -123,10 +122,10 @@ public class TabPageFragment extends Fragment {
                 // BackStackを設定
                 fragmentTransaction.addToBackStack(null);
                 int layoutID = Integer.parseInt(ids[position]);
-                DetailBlockFragment detailBlockFragment
-                        = DetailBlockFragment.newInstance(dbHelper, storyBoardNumber, layoutID);
+                DetailSettingFragment detailSettingFragment
+                        = DetailSettingFragment.newInstance(dbHelper, storyBoardNumber, layoutID);
 
-                fragmentTransaction.replace(R.id.container, detailBlockFragment);
+                fragmentTransaction.replace(R.id.container, detailSettingFragment);
                 fragmentTransaction.commit();
             }
         }
