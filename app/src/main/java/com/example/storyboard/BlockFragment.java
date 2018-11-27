@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,12 +19,16 @@ import com.example.database.Composition;
 import com.example.database.DBHelper;
 import com.example.database.Story;
 import com.example.database.Table;
+import com.example.dialog.BaseCallbackDialog;
+import com.example.dialog.YesNoDialogFragment;
 
 import org.w3c.dom.Text;
 
 import static com.example.database.DBHelper.URL;
+import static com.example.dialog.BaseCallbackDialog.ARG_LISTENER_TYPE;
 
-public class BlockFragment extends Fragment {
+public class BlockFragment extends Fragment
+        implements YesNoDialogFragment.DialogCallbackListener {
     private DBHelper dbHelper;
     private int storyBoardNumber;
     private int blockID;
@@ -105,16 +110,33 @@ public void onActivityCreated(Bundle savedInstanceState) {
                 }
             }
         });
+
+
+        final YesNoDialogFragment dialog
+                = YesNoDialogFragment.newInstance(dbHelper, Table.STORY, blockID);
+        dialog.setCallbackListener(this);
+
+        delete.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                dialog.show(getFragmentManager(), "");
+            }
+        });
     }
     // */
 
-    /*
-     * エラー等のToastを表示する
-     * str : 表示したいString
-     */
-    public void showError(String str){
-        Toast toast = Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT);
-        toast.show();
+    @Override
+    public void onPositiveButtonClicked() {
+        dbHelper.deleteStoryRecord(String.valueOf(blockID), String.valueOf(storyBoardNumber));
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager != null) {
+            fragmentManager.popBackStack();
+        }
+    }
+
+    @Override
+    public void onNegativeButtonClicked() {
+
     }
 
 }

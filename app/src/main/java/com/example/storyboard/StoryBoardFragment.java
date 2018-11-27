@@ -15,7 +15,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,6 +29,7 @@ import com.example.database.Composition;
 import com.example.database.DBHelper;
 import com.example.database.Story;
 import com.example.database.Table;
+import com.example.dialog.YesNoDialogFragment;
 import com.example.encoder.MediaPlayFragment;
 import com.example.encoder.VideoExport;
 
@@ -60,11 +63,13 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
     // record button
     private List<Integer> itemCameras;
 
+    private boolean movement;
 
     public static StoryBoardFragment newInstance(DBHelper dbHelper, int storyBoardNumber){
         StoryBoardFragment fragment = new StoryBoardFragment();
         fragment.dbHelper = dbHelper;
         fragment.storyBoardNumber = storyBoardNumber;
+        fragment.movement = false;
         return fragment;
     }
 
@@ -117,7 +122,7 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
             for (int i = 0; i < data.length; i++) {
 
                 itemImages.add(Integer.parseInt(data[i].layout));
-                itemNames.add(data[i].url);
+                itemNames.add(data[i].order);
                 itemCameras.add(android.R.drawable.ic_menu_camera);
                 if (!URL.equals(data[i].url)) {
                     ThumbnailUtils tu = new ThumbnailUtils();
@@ -153,10 +158,9 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
                             // 移動したときに順番TURNを変更
                             dbHelper.setField(Table.STORY, data[fromPos].id,
                                     Story.TURN.getName(), data[toPos].order);
-
                             dbHelper.setField(Table.STORY, data[toPos].id,
                                     Story.TURN.getName(), data[fromPos].order);
-
+                            movement = true;
                             adapter.notifyItemMoved(fromPos, toPos);
                             return true;
                         }
@@ -168,13 +172,23 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
                             itemImages.remove(fromPos);
                             itemNames.remove(fromPos);
                             itemCameras.remove(fromPos);
-
                             String id = setData()[fromPos].id;
                             // dbHelper.deleteRecord(Table.STORY, id[fromPos]);
                             dbHelper.deleteStoryRecord(id,
                                     String.valueOf(storyBoardNumber));
-
                             adapter.notifyItemRemoved(fromPos);
+                            // movement = true;
+                            FragmentManager fragmentManager = getFragmentManager();
+                            if (fragmentManager != null) {
+                                fragmentManager.popBackStack();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                // BackStackを設定
+                                fragmentTransaction.addToBackStack(null);
+
+                                StoryBoardFragment storyBoardFragment = StoryBoardFragment.newInstance(dbHelper, storyBoardNumber);
+                                fragmentTransaction.replace(R.id.container, storyBoardFragment);
+                                fragmentTransaction.commit();
+                            }
                         }
                     });
             itemDecor.attachToRecyclerView(recyclerView);
@@ -185,9 +199,30 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
             writeDown.setOnClickListener(onClickListenerWrite);
 
 
+            recyclerView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int action = event.getAction();
+                    if (action == MotionEvent.ACTION_UP && movement) {
+                        FragmentManager fragmentManager = getFragmentManager();
+                        if (fragmentManager != null) {
+                            fragmentManager.popBackStack();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            // BackStackを設定
+                            fragmentTransaction.addToBackStack(null);
+
+                            StoryBoardFragment storyBoardFragment = StoryBoardFragment.newInstance(dbHelper, storyBoardNumber);
+                            fragmentTransaction.replace(R.id.container, storyBoardFragment);
+                            fragmentTransaction.commit();
+                        }
+                    }
+                    return false;
+                }
+            });
         }
 
     }
+
 
     @Override
     public void onRecyclerClicked(View v, int position){
@@ -352,96 +387,6 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
     }
 
 
-    /*
-    // リストの普通のクリックをしたときの動作
-    private AdapterView.OnItemClickListener onItemClickListener
-            = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-            // タップしたアイテムの取得
-            ListView listView = (ListView)parent;
-            Block item = (Block)listView.getItemAtPosition(position);  // SampleListItemにキャスト
-
-
-            // Log.d(TAG, "onListItemClick position => " + position + " : id => " + id);
-
-            // タッチされた絵コンテ作品のIDを取得
-            String storiesID[] = dbHelper.getColumn(Table.STORIES, Stories.ID.getName());
-
-
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager != null) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                // BackStackを設定
-                fragmentTransaction.addToBackStack(null);
-                if(position == 0){
-                    fragmentTransaction.replace(R.id.container,
-                            new CompositionFragment(dbHelper, storyBoardNumber));
-                }
-                else {
-                    //
-                    fragmentTransaction.replace(R.id.container,
-                            new StoryBoardFragment(dbHelper, Integer.parseInt(storiesID[position-1])));
-                    //
-                }
-                fragmentTransaction.commit();
-            }
-        }
-    };
-
-
-    @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        if (requestCode == 100) {
-            if (resultCode == DialogInterface.BUTTON_POSITIVE) {
-                // positive_button 押下時の処理
-            } else if (resultCode == DialogInterface.BUTTON_NEGATIVE) {
-                // negative_button 押下時の処理
-            }
-        }
-    }
-
-
-    // リストをロングクリックしたときの動作
-    private AdapterView.OnItemLongClickListener onItemLongClickListener
-            = new AdapterView.OnItemLongClickListener(){
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
-            final BlockDialogFragment dialog = new BlockDialogFragment();
-            dialog.setTargetFragment(null, 100);
-            Bundle bundle = new Bundle();
-            bundle.putInt("aaa", 0);
-            dialog.setArguments(bundle);
-            dialog.show(getChildFragmentManager(), "my_dialog");
-            return true;
-        }
-    };
-
-
-
-
-    // 録画ボタンをクリックしたとき
-    @Override
-    public void myFunc(Object position) {
-
-        // タッチされた絵コンテ作品のIDを取得
-        String storyID[] = dbHelper.getColumn(Table.STORY, Stories.ID.getName());
-
-            FragmentManager fragmentManager = getFragmentManager();
-
-            if (fragmentManager != null) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                // BackStackを設定
-                fragmentTransaction.addToBackStack(null);
-                int id = Integer.parseInt(position.toString());
-                fragmentTransaction.replace(R.id.container,
-                            new CameraFragment(dbHelper, Integer.parseInt(storyID[id-1])));
-                fragmentTransaction.commit();
-            }
-    }
-    */
     /*
      * エラー等のToastを表示する
      * str : 表示したいString
