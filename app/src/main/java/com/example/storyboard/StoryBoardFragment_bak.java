@@ -1,6 +1,5 @@
 package com.example.storyboard;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,12 +16,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.camera.CameraFragment;
 import com.example.camera.R;
 import com.example.database.DBHelper;
 import com.example.database.Stories;
 import com.example.database.Story;
 import com.example.database.Table;
+import com.example.dialog.BlockDialogFragment;
 
 import java.util.ArrayList;
 
