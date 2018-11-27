@@ -1,9 +1,10 @@
 package com.example.encoder;
 
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +28,13 @@ public class MediaPlayFragment extends Fragment {
 
     }
 
-    public void newInstances(DBHelper dbHelper, Table table, int id){
-        this.dbHelper = dbHelper;
-        this.table = table;
-        this.id = id;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
+        table = (Table) args.getSerializable("Table");
+        id = args.getInt("StoryBoardNumber");
         setRetainInstance(true);
     }
 
@@ -67,7 +66,6 @@ public class MediaPlayFragment extends Fragment {
         }
 
         videoView.setVideoPath(url);
-        final MediaController mController = (MediaController) rootView.findViewById(R.id.controller);
         videoView.setMediaController(new MediaController(getActivity()));
         videoView.start();
 

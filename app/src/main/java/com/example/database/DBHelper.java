@@ -10,14 +10,14 @@ import android.os.Build;
 import com.example.camera.R;
 
 import java.io.File;
-import java.sql.Struct;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DBHelper {
+public class DBHelper implements Serializable {
 
     private int id = 0;
 
@@ -73,46 +73,6 @@ public class DBHelper {
         return result;
     }
 
-    public void setComposition(){
-        List<String[]> datas = new ArrayList<>();
-        String str [] = new String []{
-                "id", "三分割法",
-                "交点に被写体を配置するとバランスよく撮影することができます",
-                String.valueOf(R.mipmap.lattice),
-                String.valueOf(R.mipmap.lattice_land),
-                String.valueOf(R.mipmap.lattice_small),
-                Tag.OTHER.getName()
-        };
-        datas.add(str);
-        str = new String [] {
-                "id", "人物配置（右）",
-                "人が移動する方向や人の目線方向（左）に空間を持たせることで，"
-                        + "水平方向に動きを持たせます",
-                String.valueOf(R.mipmap.right_person_land),
-                String.valueOf(R.mipmap.right_person_land),
-                String.valueOf(R.mipmap.right_person_small),
-                Tag.PORTRAIT.getName()
-        };
-        datas.add(str);
-        str = new String [] {
-                "id", "人物配置（左）",
-                "人が移動する方向や人の目線方向（右）に空間を持たせることで，"
-                        + "水平方向に動きを持たせます",
-                String.valueOf(R.mipmap.left_person_land),
-                String.valueOf(R.mipmap.left_person_land),
-                String.valueOf(R.mipmap.left_person_small),
-                Tag.PORTRAIT.getName()
-        };
-        datas.add(str);
-
-        for(int i = 0; i < datas.size(); i++){
-            setRecord(Table.COMPOSITION, datas.get(i));
-        }
-
-
-
-    }
-
     public boolean setRecord(Table table, String[] str){
 
         writeDB();
@@ -153,8 +113,7 @@ public class DBHelper {
                 values.put(Composition.FILE_ID.getName(), str[Composition.FILE_ID.getNumber()]);
                 values.put(Composition.THUMB_ID.getName(),
                         Integer.parseInt(str[Composition.THUMB_ID.getNumber()]));
-                values.put(Composition.TAG.getName(),
-                        Integer.parseInt(str[Composition.TAG.getNumber()]));
+                values.put(Composition.TAG.getName(), str[Composition.TAG.getNumber()]);
                 break;
         }
         db.insert(table.getName(), null, values);
@@ -298,7 +257,7 @@ public class DBHelper {
         int count = 0;
         String command
                 = "select count(*) from " + table.getName()
-                + " where " + conditionColumn + " = " + condition + ";";
+                + " where " + conditionColumn + " = \"" + condition + "\";";
         readDB();
         Cursor c = db.rawQuery(command, null);
         c.moveToFirst();
@@ -367,7 +326,7 @@ public class DBHelper {
 
         String command
                 = "select " + column + " from " + table.getName()
-                + " where " + conditionColumn + " = " + condition + ";";
+                + " where " + conditionColumn + " = \"" + condition + "\";";
 
         int count = getNumOfRecord(table, conditionColumn, condition);
 
@@ -481,6 +440,90 @@ public class DBHelper {
         final DateFormat df = new SimpleDateFormat("yyMMdd_HHmmss");
         final Date date = new Date(System.currentTimeMillis());
         return df.format(date);
+    }
+
+    public void setComposition(){
+        List<String[]> datas = new ArrayList<>();
+        String str [] = new String []{
+                "id", "三分割法",
+                "交点に被写体を配置するとバランスよく撮影することができます",
+                String.valueOf(R.mipmap.lattice),
+                String.valueOf(R.mipmap.lattice_small),
+                Tag.OTHER.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "人物配置（右）",
+                "人が移動する方向や人の目線方向（左）に空間を持たせることで，"
+                        + "水平方向に動きを持たせます",
+                String.valueOf(R.mipmap.right_person),
+                String.valueOf(R.mipmap.right_person_small),
+                Tag.PORTRAIT.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "人物配置（左）",
+                "人が移動する方向や人の目線方向（右）に空間を持たせることで，"
+                        + "水平方向に動きを持たせます",
+                String.valueOf(R.mipmap.left_person),
+                String.valueOf(R.mipmap.left_person_small),
+                Tag.PORTRAIT.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "三角構図",
+                "ピラミッドのような上向き三角形の被写体やラインを取り入れることで，"
+                        + "安定感が得られます",
+                String.valueOf(R.mipmap.triangle),
+                String.valueOf(R.mipmap.triangle_smll),
+                Tag.SCENERY.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "逆三角形の構図",
+                "逆三角形の被写体やラインを取り入れることで，不安定な感じを演出します",
+                String.valueOf(R.mipmap.reverse_triangle),
+                String.valueOf(R.mipmap.reverse_triangle_small),
+                Tag.SCENERY.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "日の丸構図",
+                "画面中央に被写体を配置することで，主題をストレートに見せることができます",
+                String.valueOf(R.mipmap.japan_flag),
+                String.valueOf(R.mipmap.japan_flag_small),
+                Tag.SCENERY.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "シンメトリー構図",
+                "主題を中心において上下や左右が対称的に映る構図",
+                String.valueOf(R.mipmap.symmetry),
+                String.valueOf(R.mipmap.symmetry_small),
+                Tag.SCENERY.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "トンネル構図",
+                "手前に視野を遮るものを配置し奥の被写体が明るいことで，"
+                        + "視線が置くに誘導される効果があります",
+                String.valueOf(R.mipmap.tunnel),
+                String.valueOf(R.mipmap.tunnel_small),
+                Tag.SCENERY.getName()
+        };
+        datas.add(str);
+        str = new String [] {
+                "id", "求心的な構図",
+                "高い建物の頂上を中心としていくつかの放射状の線を感じることができる構図",
+                String.valueOf(R.mipmap.centripetal),
+                String.valueOf(R.mipmap.centripetal_main),
+                Tag.BUILDING.getName()
+        };
+        datas.add(str);
+
+        for(int i = 0; i < datas.size(); i++){
+            setRecord(Table.COMPOSITION, datas.get(i));
+        }
     }
 
 }

@@ -1,14 +1,13 @@
 package com.example.storyboard;
 
-import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +36,11 @@ public class StoryBoardsFragment extends Fragment {
 
     }
 
-    public void newInstances(DBHelper dbHelper){
-        this.dbHelper = dbHelper;
-    }
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
         setRetainInstance(true);
     }
 
@@ -107,8 +104,11 @@ public class StoryBoardsFragment extends Fragment {
                 fragmentTransaction.addToBackStack(null);
 
                 StoryBoardFragment storyBoardFragment = new StoryBoardFragment();
-                storyBoardFragment.newInstances(dbHelper, Integer.parseInt(storiesID[position]));
 
+                Bundle args = new Bundle();
+                args.putSerializable("DBHelper", dbHelper);
+                args.putInt("StoryBoardNumber", Integer.parseInt(storiesID[position]));
+                storyBoardFragment.setArguments(args);
                 fragmentTransaction.replace(R.id.container, storyBoardFragment);
                 fragmentTransaction.commit();
             }
@@ -121,6 +121,9 @@ public class StoryBoardsFragment extends Fragment {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
             final BlockDialogFragment dialog = new BlockDialogFragment();
+            Bundle args = new Bundle();
+            args.putSerializable("DBHelper", dbHelper);
+            dialog.setArguments(args);
             dialog.setTargetFragment(null, 100);
             /*
             Bundle bundle = new Bundle();

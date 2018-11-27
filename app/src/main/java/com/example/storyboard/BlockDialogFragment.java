@@ -3,9 +3,9 @@ package com.example.storyboard;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 import com.example.database.DBHelper;
@@ -23,13 +23,11 @@ public class BlockDialogFragment extends DialogFragment {
 
     }
 
-    public void newInstances(DBHelper dbHelper){
-        this.dbHelper = dbHelper;
-    }
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
         setRetainInstance(true);
     }
 

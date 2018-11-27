@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_centerInParent="true"
-        tools:context="com.example.encode.MediaPlayFragment" />
+        android:layout_alignParentLeft="true" />
 
     <MediaController
         android:id="@+id/controller"
@@ -25,6 +25,8 @@
         android:layout_marginStart="0dp"
         android:layout_marginBottom="50dp"
         android:focusable="false"
-        android:focusableInTouchMode="false" />
+        android:focusableInTouchMode="false"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp" />
 
 </RelativeLayout>

@@ -20,6 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="210dp"
+        android:backgroundTint="@color/colorPrimary"
         android:text="新規作成" />
 
     <Button
@@ -32,6 +33,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="310dp"
         android:layout_marginBottom="-100dp"
+        android:backgroundTint="@color/colorPrimary"
         android:text="絵コンテ" />
 
 

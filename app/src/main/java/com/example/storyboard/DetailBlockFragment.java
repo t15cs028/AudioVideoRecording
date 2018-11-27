@@ -1,12 +1,12 @@
 package com.example.storyboard;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,15 +35,13 @@ public class DetailBlockFragment extends Fragment {
 
     }
 
-    public void newInstances(DBHelper dbHelper, int storyBoardNumber, int compositionID){
-        this.dbHelper = dbHelper;
-        this.storyBoardNumber = storyBoardNumber;
-        this.compositionID = compositionID;
-    }
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
+        storyBoardNumber = args.getInt("StoryBoardNumber");
+        compositionID = args.getInt("layout");
         setRetainInstance(true);
     }
 
@@ -122,8 +120,24 @@ public class DetailBlockFragment extends Fragment {
                         FragmentManager fragmentManager = getFragmentManager();
 
                         if (fragmentManager != null) {
-                            // 二つ前の画面（絵コンテ）に戻る
+                            // 1つ前の画面（絵コンテ）に戻る
                             fragmentManager.popBackStack();
+                            fragmentManager.popBackStack();
+
+
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            // BackStackを設定
+                            fragmentTransaction.addToBackStack(null);
+
+                            CompositionFragment compositionFragment = new CompositionFragment();
+
+                            Bundle args = new Bundle();
+                            args.putSerializable("DBHelper", dbHelper);
+                            args.putInt("StoryBoardNumber", storyBoardNumber);
+                            compositionFragment.setArguments(args);
+
+                            fragmentTransaction.replace(R.id.container, compositionFragment);
+                            fragmentTransaction.commit();
 
                         }
                     }

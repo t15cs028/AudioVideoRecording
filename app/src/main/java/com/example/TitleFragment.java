@@ -1,9 +1,11 @@
 package com.example;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +13,11 @@ import android.widget.Button;
 
 import com.example.camera.R;
 import com.example.database.DBHelper;
+import com.example.database.Table;
 import com.example.storyboard.NewStoryFragment;
 import com.example.storyboard.StoryBoardsFragment;
 
+import static com.example.database.DBHelper.TAG;
 
 
 public class TitleFragment extends Fragment {
@@ -29,13 +33,10 @@ public class TitleFragment extends Fragment {
 
     }
 
-    public void newInstances(DBHelper dbHelper){
-        this.dbHelper = dbHelper;
-    }
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        createDataBase();
         setRetainInstance(true);
     }
 
@@ -73,15 +74,17 @@ public class TitleFragment extends Fragment {
                         // BackStackを設定
                         fragmentTransaction.addToBackStack(null);
 
+                        Bundle args = new Bundle();
+                        args.putSerializable("DBHelper", dbHelper);
                         switch (count){
                             case createStory:
                                 NewStoryFragment newStoryFragment = new NewStoryFragment();
-                                newStoryFragment.newInstances(dbHelper);
+                                newStoryFragment.setArguments(args);
                                 fragmentTransaction.replace(R.id.container, newStoryFragment);
                                 break;
                             case showStory:
                                 StoryBoardsFragment storyBoardsFragment = new StoryBoardsFragment();
-                                storyBoardsFragment.newInstances(dbHelper);
+                                storyBoardsFragment.setArguments(args);
                                 fragmentTransaction.replace(R.id.container, storyBoardsFragment);
                                 break;
 
@@ -116,6 +119,26 @@ public class TitleFragment extends Fragment {
     };
     */
 
+    public void createDataBase(){
+        try {
+            dbHelper = new DBHelper(getActivity().getApplicationContext());
+            if(dbHelper.getNumOfRecord(Table.COMPOSITION) == -1
+                    || dbHelper.getNumOfRecord(Table.COMPOSITION) == 0) {
+                dbHelper.setComposition();
+            }
+        } catch(Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
+    }
 
+    public void deleteDataBase(){
+        try {
+            dbHelper = new DBHelper(getActivity().getApplicationContext());
+            boolean result = dbHelper.isDatabaseDelete(getActivity().getApplicationContext());
+            Log.d(TAG, " delete result : " + result);
+        } catch(Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
+    }
 
 }

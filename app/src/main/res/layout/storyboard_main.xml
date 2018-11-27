@@ -15,31 +15,34 @@
         <Button
             android:id="@+id/newItem"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="55dp"
+            android:backgroundTint="@color/colorPrimary"
             android:text="new blocks"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/writeDown"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_below="@+id/newItem"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="0dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="wirte Down movies"
+            android:textSize="16sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/my_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/writeDown"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/writeDown"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="65dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
             android:scrollbars="vertical" />
 
-        <Button
-            android:id="@+id/writeDown"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginBottom="0dp"
-            android:text="wirte Down movies"
-            android:textSize="18sp" />
+
 
     </RelativeLayout>
     <!--

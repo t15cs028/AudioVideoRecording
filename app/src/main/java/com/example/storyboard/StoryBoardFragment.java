@@ -1,15 +1,16 @@
 package com.example.storyboard;
 
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -63,14 +64,12 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
 
     }
 
-    public void newInstances(DBHelper dbHelpers, int num) {
-        this.dbHelper = dbHelpers;
-        storyBoardNumber = num;
-    }
-
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
+        Bundle args = getArguments();
+        dbHelper = (DBHelper) args.getSerializable("DBHelper");
+        storyBoardNumber = args.getInt("StoryBoardNumber");
         setRetainInstance(true);
     }
 
@@ -197,7 +196,11 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
             fragmentTransaction.addToBackStack(null);
 
             MediaPlayFragment mediaPlayFragment = new MediaPlayFragment();
-            mediaPlayFragment.newInstances(dbHelper, Table.STORY, Integer.parseInt(id));
+            Bundle args = new Bundle();
+            args.putSerializable("DBHelper", dbHelper);
+            args.putInt("StoryBoardNumber", storyBoardNumber);
+            args.putSerializable("Table", Table.STORIES);
+            mediaPlayFragment.setArguments(args);
             fragmentTransaction.replace(R.id.container, mediaPlayFragment);
             fragmentTransaction.commit();
         }
@@ -219,7 +222,14 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
             fragmentTransaction.addToBackStack(null);
 
             CameraFragment cameraFragment = new CameraFragment();
-            cameraFragment.newInstances(dbHelper, Integer.parseInt(id), Integer.parseInt(layout));
+
+            Bundle args = new Bundle();
+            args.putSerializable("DBHelper", dbHelper);
+            args.putInt("id", Integer.parseInt(id));
+            args.putInt("layout", Integer.parseInt(layout));
+
+            cameraFragment.setArguments(args);
+
             fragmentTransaction.replace(R.id.container, cameraFragment);
             fragmentTransaction.commit();
         }
@@ -239,7 +249,12 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
                 fragmentTransaction.addToBackStack(null);
 
                 CompositionFragment compositionFragment = new CompositionFragment();
-                compositionFragment.newInstances(dbHelper, storyBoardNumber);
+
+                Bundle args = new Bundle();
+                args.putSerializable("DBHelper", dbHelper);
+                args.putInt("StoryBoardNumber", storyBoardNumber);
+                compositionFragment.setArguments(args);
+
                 fragmentTransaction.replace(R.id.container, compositionFragment);
                 fragmentTransaction.commit();
             }
@@ -262,9 +277,15 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
                     // BackStackを設定
                     fragmentTransaction.addToBackStack(null);
 
-                    MediaPlayFragment mediPlayFragment = new MediaPlayFragment();
-                    mediPlayFragment.newInstances(dbHelper, Table.STORIES, storyBoardNumber);
-                    fragmentTransaction.replace(R.id.container, mediPlayFragment);
+                    MediaPlayFragment mediaPlayFragment = new MediaPlayFragment();
+
+                    Bundle args = new Bundle();
+                    args.putSerializable("DBHelper", dbHelper);
+                    args.putInt("StoryBoardNumber", storyBoardNumber);
+                    args.putSerializable("Table", Table.STORIES);
+                    mediaPlayFragment.setArguments(args);
+
+                    fragmentTransaction.replace(R.id.container, mediaPlayFragment);
                     fragmentTransaction.commit();
                 }
 

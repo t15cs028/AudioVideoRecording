@@ -84,6 +84,7 @@ public class BlockListAdapter extends RecyclerView.Adapter<BlockListAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        System.out.println(itemImages.get(position));
         holder.imageView.setImageResource(itemImages.get(position));
         if(itemThumbnails.get(position) != null){
             holder.imageView.setImageBitmap(itemThumbnails.get(position));
