@@ -31,7 +31,13 @@ public class TabPageFragment extends Fragment {
     private String tag;
     private View rootView;
 
-    static TabPageFragment newInstance() {return new TabPageFragment();}
+    static TabPageFragment newInstance(DBHelper dbHelper, int storyBoardNumber, String tag) {
+        TabPageFragment fragment = new TabPageFragment();
+        fragment.dbHelper = dbHelper;
+        fragment.storyBoardNumber = storyBoardNumber;
+        fragment.tag = tag;
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -116,14 +122,9 @@ public class TabPageFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 // BackStackを設定
                 fragmentTransaction.addToBackStack(null);
-                DetailBlockFragment detailBlockFragment = new DetailBlockFragment();
-
-                Bundle args = new Bundle();
-                args.putSerializable("DBHelper", dbHelper);
-                args.putInt("StoryBoardNumber", storyBoardNumber);
-                args.putInt("layout", Integer.parseInt(ids[position]));
-
-                detailBlockFragment.setArguments(args);
+                int layoutID = Integer.parseInt(ids[position]);
+                DetailBlockFragment detailBlockFragment
+                        = DetailBlockFragment.newInstance(dbHelper, storyBoardNumber, layoutID);
 
                 fragmentTransaction.replace(R.id.container, detailBlockFragment);
                 fragmentTransaction.commit();

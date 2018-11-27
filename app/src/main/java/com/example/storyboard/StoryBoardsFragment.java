@@ -31,6 +31,11 @@ public class StoryBoardsFragment extends Fragment {
     /*
     private ViewGroup container;
     */
+    public static StoryBoardsFragment newInstance(DBHelper dbHelper){
+        StoryBoardsFragment fragment = new StoryBoardsFragment();
+        fragment.dbHelper = dbHelper;
+        return fragment;
+    }
 
     public StoryBoardsFragment() {
 
@@ -39,8 +44,6 @@ public class StoryBoardsFragment extends Fragment {
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        Bundle args = getArguments();
-        dbHelper = (DBHelper) args.getSerializable("DBHelper");
         setRetainInstance(true);
     }
 
@@ -103,12 +106,8 @@ public class StoryBoardsFragment extends Fragment {
                 // BackStackを設定
                 fragmentTransaction.addToBackStack(null);
 
-                StoryBoardFragment storyBoardFragment = new StoryBoardFragment();
-
-                Bundle args = new Bundle();
-                args.putSerializable("DBHelper", dbHelper);
-                args.putInt("StoryBoardNumber", Integer.parseInt(storiesID[position]));
-                storyBoardFragment.setArguments(args);
+                int storyID = Integer.parseInt(storiesID[position]);
+                StoryBoardFragment storyBoardFragment = StoryBoardFragment.newInstance(dbHelper, storyID);
                 fragmentTransaction.replace(R.id.container, storyBoardFragment);
                 fragmentTransaction.commit();
             }
@@ -120,10 +119,7 @@ public class StoryBoardsFragment extends Fragment {
             = new AdapterView.OnItemLongClickListener(){
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
-            final BlockDialogFragment dialog = new BlockDialogFragment();
-            Bundle args = new Bundle();
-            args.putSerializable("DBHelper", dbHelper);
-            dialog.setArguments(args);
+            final BlockDialogFragment dialog = BlockDialogFragment.newInstance(dbHelper);
             dialog.setTargetFragment(null, 100);
             /*
             Bundle bundle = new Bundle();

@@ -123,11 +123,8 @@ public class StoryBoardFragment_bak extends Fragment /*implements BlockListAdapt
                 // BackStackを設定
                 fragmentTransaction.addToBackStack(null);
                 if(position == 0){
-                    CompositionFragment compositionFragment = new CompositionFragment();
-                    Bundle args = new Bundle();
-                    args.putSerializable("DBHelper", dbHelper);
-                    args.putInt("StoryBoardNumber", storyBoardNumber);
-                    compositionFragment.setArguments(args);
+                    CompositionFragment compositionFragment
+                            = CompositionFragment.newInstance(dbHelper, storyBoardNumber);
                     fragmentTransaction.replace(R.id.container, compositionFragment);
                 }
                 else {

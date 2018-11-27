@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
 	static private DBHelper dBHelper = null;
 
+
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 
@@ -83,10 +84,18 @@ public class MainActivity extends AppCompatActivity {
 			setContentView(R.layout.activity_main);
 
 			if (savedInstanceState == null) {
+				createDataBase();
+				// deleteDataBase();
 				FragmentManager fragmentManager = getSupportFragmentManager();
 				FragmentTransaction fragmentTransaction =
 						fragmentManager.beginTransaction();
-				TitleFragment titleFragment = new TitleFragment();
+				// TitleFragment titleFragment = new TitleFragment(dBHelper);
+                TitleFragment titleFragment = TitleFragment.newInstance(dBHelper);
+				/*
+				Bundle args = new Bundle();
+				args.putSerializable("DBHelper", dBHelper);
+				titleFragment.setArguments(args);
+				*/
 				fragmentTransaction.replace(R.id.container, titleFragment);
 				fragmentTransaction.commit();
 
@@ -211,12 +220,17 @@ public class MainActivity extends AppCompatActivity {
 			}
 			// 使用が許可された
 			if (auth == 0) {
+
+				createDataBase();
+
 				setContentView(R.layout.activity_main);
 
 				TitleFragment titleFragment = new TitleFragment();
+				/*
 				Bundle args = new Bundle();
 				args.putSerializable("DBHelper", dBHelper);
 				titleFragment.setArguments(args);
+				*/
 				FragmentTransaction fragmentTransaction =
 						getSupportFragmentManager().beginTransaction();
 
@@ -263,5 +277,27 @@ public class MainActivity extends AppCompatActivity {
 		);
 	}
 	*/
+
+	public void createDataBase(){
+		try {
+			dBHelper = new DBHelper(getApplicationContext());
+			if(dBHelper.getNumOfRecord(Table.COMPOSITION) == -1
+					|| dBHelper.getNumOfRecord(Table.COMPOSITION) == 0) {
+				dBHelper.setComposition();
+			}
+		} catch(Exception e) {
+			Log.d(TAG, e.getMessage());
+		}
+	}
+
+	public void deleteDataBase(){
+		try {
+			dBHelper = new DBHelper(getApplicationContext());
+			boolean result = dBHelper.isDatabaseDelete(getApplicationContext());
+			Log.d(TAG, " delete result : " + result);
+		} catch(Exception e) {
+			Log.d(TAG, e.getMessage());
+		}
+	}
 
 }

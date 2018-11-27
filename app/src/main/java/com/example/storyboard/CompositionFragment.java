@@ -34,6 +34,12 @@ public class CompositionFragment extends Fragment {
     private int storyBoardNumber;
     private View rootView;
 
+    public static CompositionFragment newInstance(DBHelper dbHelper, int storyBoardNumber){
+        CompositionFragment fragment = new CompositionFragment();
+        fragment.dbHelper = dbHelper;
+        fragment.storyBoardNumber = storyBoardNumber;
+        return fragment;
+    }
     public CompositionFragment() {
 
     }
@@ -41,9 +47,6 @@ public class CompositionFragment extends Fragment {
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        Bundle args = getArguments();
-        dbHelper = (DBHelper) args.getSerializable("DBHelper");
-        storyBoardNumber = args.getInt("StoryBoardNumber");
         setRetainInstance(true);
     }
 
@@ -78,12 +81,9 @@ public class CompositionFragment extends Fragment {
         for(int i = 0; i < Tag.values().length; i++){
             tabSpec.add(tabHost.newTabSpec(Tag.values()[i].getName()));
             tabSpec.get(i).setIndicator(Tag.values()[i].getName());
-            Bundle args = new Bundle();
-            args.putSerializable("DBHelper", dbHelper);
             Tag t = Tag.values()[i];
-            args.putString("Tag", t.getName());
-            args.putInt("StoryBoardNumber", storyBoardNumber);
-            tabHost.addTab(tabSpec.get(i), TabPageFragment.class, args);
+            TabPageFragment fragment = TabPageFragment.newInstance(dbHelper, storyBoardNumber, t.getName());
+            tabHost.addTab(tabSpec.get(i), fragment.getClass(), null);
         }
     }
 }
