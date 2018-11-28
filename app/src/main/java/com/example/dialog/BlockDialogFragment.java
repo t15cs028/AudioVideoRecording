@@ -1,18 +1,13 @@
-package com.example.storyboard;
+package com.example.dialog;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 
 import com.example.database.DBHelper;
 import com.example.database.Table;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BlockDialogFragment extends DialogFragment {
 

@@ -52,7 +52,6 @@ public class TitleFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
 
-        System.out.println("Title : dbHelper = " + dbHelper);
         final View rootView = inflater.inflate(R.layout.menu_main, container, false);
         return rootView;
     }

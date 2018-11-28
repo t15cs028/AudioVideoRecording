@@ -82,8 +82,10 @@ public class CompositionFragment extends Fragment {
             tabSpec.add(tabHost.newTabSpec(Tag.values()[i].getName()));
             tabSpec.get(i).setIndicator(Tag.values()[i].getName());
             Tag t = Tag.values()[i];
-            TabPageFragment fragment = TabPageFragment.newInstance(dbHelper, storyBoardNumber, t.getName());
-            tabHost.addTab(tabSpec.get(i), fragment.getClass(), null);
+            Bundle args = new Bundle();
+            args.putInt("StoryBoardNumber", storyBoardNumber);
+            args.putString("Tag", t.getName());
+            tabHost.addTab(tabSpec.get(i), TabPageFragment.class, args);
         }
     }
 }

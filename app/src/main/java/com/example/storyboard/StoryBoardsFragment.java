@@ -18,6 +18,7 @@ import com.example.camera.R;
 import com.example.database.DBHelper;
 import com.example.database.Stories;
 import com.example.database.Table;
+import com.example.dialog.BlockDialogFragment;
 
 import java.util.ArrayList;
 
