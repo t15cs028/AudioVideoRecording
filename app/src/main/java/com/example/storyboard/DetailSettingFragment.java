@@ -145,19 +145,25 @@ public class DetailSettingFragment extends Fragment {
                         }
                     }
                 } else {
-                    dbHelper.setField(
-                            Table.STORY, String.valueOf(blockID),
-                            Story.NAME.getName(), sb[0].toString()
-                    );
-                    dbHelper.setField(
-                            Table.STORY, String.valueOf(blockID),
-                            Story.DESCRIPTION.getName(), sb[1].toString()
-                    );
-                    FragmentManager fragmentManager = getFragmentManager();
+                    // 名前の入力なし
+                    if (sb[0].toString().length() == 0 || sb[1].toString().length() == 0) {
+                        showError("Please input name!");
+                    }
+                    else {
+                        dbHelper.setField(
+                                Table.STORY, String.valueOf(blockID),
+                                Story.NAME.getName(), sb[0].toString()
+                        );
+                        dbHelper.setField(
+                                Table.STORY, String.valueOf(blockID),
+                                Story.DESCRIPTION.getName(), sb[1].toString()
+                        );
+                        FragmentManager fragmentManager = getFragmentManager();
 
-                    if (fragmentManager != null) {
-                        // 1つ前の画面（絵コンテ）に戻る
-                        fragmentManager.popBackStack();
+                        if (fragmentManager != null) {
+                            // 1つ前の画面（絵コンテ）に戻る
+                            fragmentManager.popBackStack();
+                        }
                     }
                 }
             }
