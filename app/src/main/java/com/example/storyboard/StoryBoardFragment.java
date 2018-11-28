@@ -68,12 +68,18 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
     private List<Bitmap> itemThumbnails;
     // block name
     private List<String> itemNames;
-    // record button
-    private List<Integer> itemCameras;
+    private List<String> itemDetails;
 
     private List<int[]> movePosition;
 
     private boolean movement;
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        List<DataSet> datas = setData();
+        updateDataBase(datas);
+    }
 
     public static StoryBoardFragment newInstance(DBHelper dbHelper, int storyBoardNumber){
         StoryBoardFragment fragment = new StoryBoardFragment();
@@ -126,15 +132,15 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
             itemImages = new ArrayList<>();
             itemThumbnails = new ArrayList<>();
             itemNames = new ArrayList<>();
-            itemCameras = new ArrayList<>();
+            itemDetails = new ArrayList<>();
 
             movePosition = new ArrayList<>();
 
             for (DataSet d : data) {
 
                 itemImages.add(Integer.parseInt(d.layout));
-                itemNames.add(d.order);
-                itemCameras.add(android.R.drawable.ic_menu_camera);
+                itemNames.add(d.name);
+                itemDetails.add(d.description);
                 if (!URL.equals(d.url)) {
                     ThumbnailUtils tu = new ThumbnailUtils();
                     Bitmap bmp
@@ -148,7 +154,7 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
 
 
             // specify an adapter (see also next example)
-            adapter = new BlockListAdapter(itemImages, itemThumbnails, itemNames, itemCameras, this);
+            adapter = new BlockListAdapter(itemImages, itemThumbnails, itemNames, itemDetails, this);
             recyclerView.setAdapter(adapter);
 
 
@@ -181,7 +187,7 @@ public class StoryBoardFragment extends Fragment implements OnRecyclerListener {
                             Log.d(TAG, "delete position => " + fromPos);
                             itemImages.remove(fromPos);
                             itemNames.remove(fromPos);
-                            itemCameras.remove(fromPos);
+                            itemDetails.remove(fromPos);
 
                             int positions[] = new int [] {fromPos, -1};
                             movePosition.add(positions);

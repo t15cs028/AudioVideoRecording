@@ -27,6 +27,7 @@ public class BlockListAdapter extends RecyclerView.Adapter<BlockListAdapter.View
 
     // block name
     private List<String> itemNames;
+    private List<String> itemDetail;
     // record button
     private List<Integer> itemCameras;
 
@@ -40,33 +41,34 @@ public class BlockListAdapter extends RecyclerView.Adapter<BlockListAdapter.View
     static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         ImageView imageView;
-        TextView textView;
+        TextView titleView;
+        TextView detailView;
         ImageButton imageButton;
 
         ViewHolder(View v) {
             super(v);
             imageView = (ImageView) v.findViewById(R.id.thumbnail);
-            textView = (TextView) v.findViewById(R.id.title);
+            titleView = (TextView) v.findViewById(R.id.title);
+            detailView = (TextView) v.findViewById(R.id.detail);
             imageButton = (ImageButton) v.findViewById(R.id.recordButton);
 
         }
     }
-
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public BlockListAdapter(
             List<Integer> itemImages,
             List<Bitmap> itemThumbnails,
             List<String> itemNames,
-            List<Integer> itemCamera,
+            List<String> itemDetail,
             OnRecyclerListener listener) {
         this.itemImages = itemImages;
         this.itemThumbnails = itemThumbnails;
         this.itemNames = itemNames;
-        this.itemCameras = itemCamera;
+        this.itemDetail = itemDetail;
         this.listener = listener;
-
     }
+
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -88,8 +90,8 @@ public class BlockListAdapter extends RecyclerView.Adapter<BlockListAdapter.View
         if(itemThumbnails.get(position) != null){
             holder.imageView.setImageBitmap(itemThumbnails.get(position));
         }
-        holder.textView.setText(itemNames.get(position));
-        holder.imageButton.setImageResource(itemCameras.get(position));
+        holder.titleView.setText(itemNames.get(position));
+        holder.detailView.setText(itemDetail.get(position));
 
         // クリックリスナを搭載
         holder.itemView.setOnClickListener(new View.OnClickListener() {
