@@ -128,6 +128,7 @@ public void onActivityCreated(Bundle savedInstanceState) {
     @Override
     public void onPositiveButtonClicked() {
         dbHelper.deleteStoryRecord(String.valueOf(blockID), String.valueOf(storyBoardNumber));
+        showToast("success to delete");
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager != null) {
             fragmentManager.popBackStack();
@@ -139,4 +140,12 @@ public void onActivityCreated(Bundle savedInstanceState) {
 
     }
 
+    /*
+     * エラー等のToastを表示する
+     * str : 表示したいString
+     */
+    public void showToast(String str){
+        Toast toast = Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 }
