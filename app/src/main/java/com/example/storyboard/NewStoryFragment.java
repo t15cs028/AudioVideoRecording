@@ -44,8 +44,6 @@ public class NewStoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
-        Bundle args = getArguments();
-        dbHelper = (DBHelper) args.getSerializable("DBHelper");
         setRetainInstance(true);
     }
 
