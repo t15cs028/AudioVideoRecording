@@ -1,54 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.storyboard.StoryBoardFragment"
-    android:orientation="horizontal">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/newItem"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="new blocks"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/writeDown"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_below="@+id/newItem"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="0dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="wirte Down movies"
-            android:textSize="16sp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/writeDown"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:scrollbars="vertical" />
-
-
-
-    </RelativeLayout>
-    <!--
-    <ListView
-        android:id="@+id/sample_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-        -->
-</LinearLayout>
+<?xml version="1.0" encoding="utf-8"?><LinearLayout    xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:tools="http://schemas.android.com/tools"    android:id="@+id/container"    android:layout_width="match_parent"    android:layout_height="match_parent"    tools:context="com.example.storyboard.StoryBoardFragment"    android:orientation="horizontal">    <RelativeLayout        android:layout_width="match_parent"        android:layout_height="match_parent">        <Button            android:id="@+id/newItem"            android:layout_width="match_parent"            android:layout_height="55dp"            android:backgroundTint="@color/colorPrimary"            android:text="new blocks"            android:textSize="16sp" />        <Button            android:id="@+id/writeDown"            style="@style/Widget.AppCompat.Button"            android:layout_width="match_parent"            android:layout_height="55dp"            android:layout_below="@+id/newItem"            android:layout_alignParentStart="true"            android:layout_marginTop="0dp"            android:backgroundTint="@color/colorPrimary"            android:text="wirte Down movies"            android:textSize="16sp" />        <android.support.v7.widget.RecyclerView            android:id="@+id/my_recycler_view"            android:layout_width="match_parent"            android:layout_height="match_parent"            android:layout_below="@+id/writeDown"            android:layout_alignParentStart="true"            android:layout_marginStart="0dp"            android:layout_marginTop="0dp"            android:scrollbars="vertical" />    </RelativeLayout>    <!--    <ListView        android:id="@+id/sample_listview"        android:layout_width="match_parent"        android:layout_height="wrap_content" />        --></LinearLayout>
