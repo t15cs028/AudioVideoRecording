@@ -34,8 +34,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.database.Composition;
@@ -50,12 +53,14 @@ public class CameraFragment extends Fragment {
 	private static final boolean DEBUG = false;	// TODO set false on release
 	private static final String TAG = "CameraFragment";
 
+	/********** add **********/
 	private DBHelper dbHelper;
 	private int id;
 	private int layoutID;
-
-	private String fileURL;
-
+	private SeekBar zoom;
+	private float rate;
+	private int preBar;
+	/*********************/
 	/**
 	 * for camera preview display
 	 */
@@ -83,6 +88,8 @@ public class CameraFragment extends Fragment {
 		fragment.dbHelper = dbHelper;
 		fragment.id = id;
 		fragment.layoutID = layoutID;
+		fragment.rate = 1;
+		fragment.preBar = 0;
 		return fragment;
 	}
 
@@ -105,6 +112,42 @@ public class CameraFragment extends Fragment {
 		mRecordButton.setOnClickListener(mOnClickListener);
 
 		/********** add **********/
+		zoom = (SeekBar) rootView.findViewById(R.id.zoom);
+
+
+
+		zoom.setOnSeekBarChangeListener(
+				new SeekBar.OnSeekBarChangeListener() {
+					public void onProgressChanged(SeekBar seekBar,
+												  int progress, boolean fromUser) {
+
+						// ツマミをドラッグしたときに呼ばれる
+						float variable = (float) (zoom.getProgress() - preBar) * 0.01f;
+						ScaleAnimation scaleAnimation
+								= new ScaleAnimation(
+								rate, rate + variable, rate, rate + variable,
+								Animation.RELATIVE_TO_SELF,
+								0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+						);
+						rate += variable;
+						preBar = zoom.getProgress();
+						scaleAnimation.setDuration(1);
+						scaleAnimation.setRepeatCount(0);
+						scaleAnimation.setFillAfter(true);
+						mCameraView.startAnimation(scaleAnimation);
+					}
+
+					public void onStartTrackingTouch(SeekBar seekBar) {
+						// ツマミに触れたときに呼ばれる
+					}
+
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						// ツマミを離したときに呼ばれる
+					}
+				}
+		);
+
+
 		String [] ids
 				= dbHelper.getColumn(
 				Table.COMPOSITION, Composition.FILE_ID.getName(),
