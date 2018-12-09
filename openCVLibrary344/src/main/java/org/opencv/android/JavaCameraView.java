@@ -1,5 +1,6 @@
 package org.opencv.android;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import android.content.Context;
@@ -10,9 +11,11 @@ import android.hardware.Camera.PreviewCallback;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 
-import org.opencv.BuildConfig;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
@@ -43,6 +46,9 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
     private SurfaceTexture mSurfaceTexture;
     private int mPreviewFormat = ImageFormat.NV21;
 
+    private int localCameraIndex;
+    private AttributeSet attr;
+
     public static class JavaCameraSizeAccessor implements ListItemAccessor {
 
         @Override
@@ -64,6 +70,7 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
 
     public JavaCameraView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.attr = attrs;
     }
 
     protected boolean initializeCamera(int width, int height) {
@@ -96,7 +103,7 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
                 }
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                    int localCameraIndex = mCameraIndex;
+                    localCameraIndex = mCameraIndex;
                     if (mCameraIndex == CAMERA_ID_BACK) {
                         Log.i(TAG, "Trying to open back camera");
                         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
@@ -144,7 +151,14 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
 
                 if (sizes != null) {
                     /* Select the size that fits surface considering maximum size allowed */
-                    Size frameSize = calculateCameraFrameSize(sizes, new JavaCameraSizeAccessor(), width, height);
+
+
+                    setRotation(params);
+                    String msg = "rotation = " + String.valueOf(mRotation);
+                    Log.d(TAG, msg);
+
+                    Size frameSize;
+                    frameSize = calculateCameraFrameSize(sizes, new JavaCameraSizeAccessor(), width, height);
 
                     /* Image format NV21 causes issues in the Android emulators */
                     if (Build.FINGERPRINT.startsWith("generic")
@@ -162,6 +176,8 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
                     mPreviewFormat = params.getPreviewFormat();
 
                     Log.d(TAG, "Set preview size to " + Integer.valueOf((int)frameSize.width) + "x" + Integer.valueOf((int)frameSize.height));
+
+
                     params.setPreviewSize((int)frameSize.width, (int)frameSize.height);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && !android.os.Build.MODEL.equals("GT-I9100"))
@@ -176,8 +192,10 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
                     mCamera.setParameters(params);
                     params = mCamera.getParameters();
 
+
                     mFrameWidth = params.getPreviewSize().width;
                     mFrameHeight = params.getPreviewSize().height;
+
 
                     if ((getLayoutParams().width == LayoutParams.MATCH_PARENT) && (getLayoutParams().height == LayoutParams.MATCH_PARENT))
                         mScale = Math.min(((float)height)/mFrameHeight, ((float)width)/mFrameWidth);
@@ -201,6 +219,7 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
 
                     AllocateCache();
 
+
                     mCameraFrame = new JavaCameraFrame[2];
                     mCameraFrame[0] = new JavaCameraFrame(mFrameChain[0], mFrameWidth, mFrameHeight);
                     mCameraFrame[1] = new JavaCameraFrame(mFrameChain[1], mFrameWidth, mFrameHeight);
@@ -209,7 +228,15 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
                         mSurfaceTexture = new SurfaceTexture(MAGIC_TEXTURE_ID);
                         mCamera.setPreviewTexture(mSurfaceTexture);
                     } else
-                       mCamera.setPreviewDisplay(null);
+                        mCamera.setPreviewDisplay(null);
+
+                    /*
+                    setRotation(params);
+                    // setDisplayOrientation(mCamera);
+                    String msg = "rotation = " + String.valueOf(mRotation);
+                    Log.d(TAG, msg);
+                    mCamera.setPreviewDisplay(getHolder());
+                    */
 
                     /* Finally we are ready to start the preview */
                     Log.d(TAG, "startPreview");
@@ -231,7 +258,6 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
             if (mCamera != null) {
                 mCamera.stopPreview();
                 mCamera.setPreviewCallback(null);
-
                 mCamera.release();
             }
             mCamera = null;
@@ -299,15 +325,18 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
 
     @Override
     public void onPreviewFrame(byte[] frame, Camera arg1) {
+        /*
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Preview Frame received. Frame size: " + frame.length);
+            */
         synchronized (this) {
             mFrameChain[mChainIdx].put(0, 0, frame);
             mCameraFrameReady = true;
             this.notify();
         }
-        if (mCamera != null)
+        if (mCamera != null) {
             mCamera.addCallbackBuffer(mBuffer);
+        }
     }
 
     private class JavaCameraFrame implements CvCameraViewFrame {
@@ -376,4 +405,44 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
             Log.d(TAG, "Finish processing thread");
         }
     }
+
+    /**
+     * rotate preview screen according to the device orientation
+     * @param params
+     */
+
+    private boolean mIsFrontFace = false;
+
+    protected void setRotation(final Camera.Parameters params) {
+
+        final Display display = ((WindowManager)getContext()
+                .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        final int rotation = display.getRotation();
+
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
+        }
+        // get whether the camera is front camera or back camera
+        final Camera.CameraInfo info =
+                new android.hardware.Camera.CameraInfo();
+        // android.hardware.Camera.getCameraInfo(mCameraIndex, info);
+        android.hardware.Camera.getCameraInfo(localCameraIndex, info);
+        mIsFrontFace = (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT);
+        if (mIsFrontFace) {	// front camera
+            degrees = (info.orientation + degrees) % 360;
+            degrees = (360 - degrees) % 360;  // reverse
+        } else {  // back camera
+            degrees = (info.orientation - degrees + 360) % 360;
+        }
+        // apply rotation setting
+        mCamera.setDisplayOrientation(degrees);
+        mRotation = degrees;
+        // XXX This method fails to call and camera stops working on some devices.
+        // params.setRotation(degrees);
+    }
+
 }
