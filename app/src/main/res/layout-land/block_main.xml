@@ -1,99 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="360dp"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/composition"
-                android:layout_width="320dp"
-                android:layout_height="180dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/black"
-                android:padding="3dp" />
-
-            <TextView
-                android:id="@+id/where"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:text="Where do you live?"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/what"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:text="What picture do you take?"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/modify"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="125dp"
-                android:text="modify" />
-
-            <Button
-                android:id="@+id/delete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/modify"
-                android:layout_alignStart="@+id/modify"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="25dp"
-                android:text="delete" />
-        </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent" android:layout_height="match_parent">    <LinearLayout        android:layout_width="match_parent"        android:layout_height="match_parent"        android:orientation="horizontal"        >        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"            android:layout_width="360dp"            android:layout_height="fill_parent"            android:orientation="vertical">            <ImageView                android:id="@+id/composition"                android:layout_width="320dp"                android:layout_height="180dp"                android:layout_alignParentStart="true"                android:layout_alignParentTop="true"                android:layout_gravity="center_horizontal"                android:layout_marginTop="20dp"                android:background="@android:color/black"                android:padding="3dp" />            <TextView                android:id="@+id/where"                android:layout_width="wrap_content"                android:layout_height="wrap_content"                android:layout_alignParentStart="true"                android:layout_alignParentTop="true"                android:layout_gravity="center_horizontal"                android:layout_marginTop="15dp"                android:text="Where do you visit?"                android:textSize="18sp" />            <TextView                android:id="@+id/name"                android:layout_width="wrap_content"                android:layout_height="wrap_content"                android:layout_alignParentStart="true"                android:layout_alignParentTop="true"                android:layout_gravity="center_horizontal"                android:layout_marginTop="5dp"                android:textSize="18sp" />            <TextView                android:id="@+id/what"                android:layout_width="wrap_content"                android:layout_height="wrap_content"                android:layout_alignParentStart="true"                android:layout_alignParentTop="true"                android:layout_gravity="center_horizontal"                android:layout_marginTop="15dp"                android:text="What picture do you take?"                android:textSize="18sp" />            <TextView                android:id="@+id/description"                android:layout_width="wrap_content"                android:layout_height="wrap_content"                android:layout_alignParentStart="true"                android:layout_alignParentTop="true"                android:layout_gravity="center_horizontal"                android:layout_marginTop="5dp"                android:textSize="18sp" />        </LinearLayout>        <LinearLayout            android:layout_width="match_parent"            android:layout_height="match_parent"            android:orientation="vertical">            <Button                android:id="@+id/record"                android:layout_width="match_parent"                android:layout_height="wrap_content"                android:layout_alignParentTop="true"                android:layout_alignParentEnd="true"                android:layout_gravity="center_horizontal"                android:layout_marginTop="75dp"                android:text="record" />            <Button                android:id="@+id/modify"                android:layout_width="match_parent"                android:layout_height="wrap_content"                android:layout_below="@+id/record"                android:layout_alignStart="@+id/record"                android:layout_gravity="center_horizontal"                android:layout_marginTop="25dp"                android:text="modify" />            <Button                android:id="@+id/delete"                android:layout_width="match_parent"                android:layout_height="wrap_content"                android:layout_below="@+id/modify"                android:layout_alignStart="@+id/modify"                android:layout_gravity="center_horizontal"                android:layout_marginTop="25dp"                android:text="delete" />        </LinearLayout>    </LinearLayout></RelativeLayout>
