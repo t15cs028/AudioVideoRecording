@@ -2,6 +2,8 @@ package com.example.storyboard;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +85,18 @@ public class DetailCompositionFragment extends Fragment {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
+                    if (fragmentManager != null) {
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        // BackStackを設定
+                        fragmentTransaction.addToBackStack(null);
+                        DetailSettingFragment detailSettingFragment
+                                = DetailSettingFragment.newInstance(dbHelper, storyBoardNumber, compositionID);
+
+                        fragmentTransaction.replace(R.id.container, detailSettingFragment);
+                        fragmentTransaction.commit();
+                    }
                 }
             };
 
