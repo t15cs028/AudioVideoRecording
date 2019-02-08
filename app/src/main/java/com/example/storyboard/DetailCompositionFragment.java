@@ -60,20 +60,21 @@ public class DetailCompositionFragment extends Fragment {
                 Sample.COMPOSITION_ID.getName(), String.valueOf(compositionID)
         );
 
-        ImageView image = (ImageView) rootView.findViewById(R.id.sample1);
-        GlideDrawableImageViewTarget target = new GlideDrawableImageViewTarget(image);
-        Glide.with(getContext()).load(Integer.parseInt(sample_movie[0])).into(target);
-        /*
-        image = (ImageView) rootView.findViewById(R.id.sample2);
-        target = new GlideDrawableImageViewTarget(image);
-        Glide.with(getContext()).load(Integer.parseInt(sample_movie[1])).into(target);
-        */
+        if(sample_movie.length  != 0) {
+            ImageView image = (ImageView) rootView.findViewById(R.id.sample1);
+            GlideDrawableImageViewTarget target = new GlideDrawableImageViewTarget(image);
+            Glide.with(getContext()).load(Integer.parseInt(sample_movie[0])).into(target);
+            if(sample_movie.length > 1) {
+                image = (ImageView) rootView.findViewById(R.id.sample2);
+                target = new GlideDrawableImageViewTarget(image);
+                Glide.with(getContext()).load(Integer.parseInt(sample_movie[1])).into(target);
+            }
+        }
 
 
         Button button = (Button) view.findViewById(R.id.enter);
         final TextView description = rootView.findViewById(R.id.description);
         description.setText(desc);
-
 
         button.setOnClickListener(onClickListener);
     }
