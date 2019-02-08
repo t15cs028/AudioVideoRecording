@@ -14,41 +14,31 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="120dp">
 
-        <ImageView
-            android:id="@+id/composition"
-            android:layout_width="320dp"
-            android:layout_height="180dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/black"
-            android:padding="3dp" />
 
         <ImageView
             android:id="@+id/sample1"
-            android:layout_width="144dp"
-            android:layout_height="81dp"
-            android:layout_below="@+id/composition"
-            android:layout_alignStart="@+id/composition"
+            android:layout_width="320dp"
+            android:layout_height="180dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="20dp"/>
 
         <ImageView
             android:id="@+id/sample2"
-            android:layout_width="144dp"
-            android:layout_height="81dp"
-            android:layout_below="@+id/composition"
-            android:layout_alignEnd="@+id/composition"
-            android:layout_marginEnd="0dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_width="320dp"
+            android:layout_height="180dp"
+            android:layout_below="@+id/sample1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="0dp" />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sample1"
-            android:layout_alignStart="@+id/composition"
-            android:layout_alignEnd="@+id/composition"
+            android:layout_below="@+id/sample2"
+            android:layout_alignStart="@+id/sample2"
+            android:layout_alignEnd="@+id/sample2"
             android:layout_marginStart="0dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="0dp"
@@ -61,7 +51,7 @@
             android:layout_below="@+id/description"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:text="select" />
 
     </RelativeLayout>

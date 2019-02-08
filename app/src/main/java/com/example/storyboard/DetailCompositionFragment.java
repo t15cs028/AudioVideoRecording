@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
@@ -16,6 +17,8 @@ import com.example.database.Composition;
 import com.example.database.DBHelper;
 import com.example.database.Sample;
 import com.example.database.Table;
+
+import org.w3c.dom.Text;
 
 public class DetailCompositionFragment extends Fragment {
 
@@ -47,22 +50,18 @@ public class DetailCompositionFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView image = (ImageView) rootView.findViewById(R.id.composition);
-        String layout_id = dbHelper.getColumn(
-                Table.COMPOSITION, Composition.THUMB_ID.getName(),
+        String desc = dbHelper.getColumn(
+                Table.COMPOSITION, Composition.DESCRIPTION.getName(),
                 Composition.ID.getName(), String.valueOf(compositionID)
         )[0];
-        System.out.println(String.valueOf(compositionID));
-        GlideDrawableImageViewTarget target = new GlideDrawableImageViewTarget(image);
-        Glide.with(getContext()).load(Integer.parseInt(layout_id)).into(target);
 
         String sample_movie[] = dbHelper.getColumn(
                 Table.SAMPLE, Sample.FILE_ID.getName(),
                 Sample.COMPOSITION_ID.getName(), String.valueOf(compositionID)
         );
 
-        image = (ImageView) rootView.findViewById(R.id.sample1);
-        target = new GlideDrawableImageViewTarget(image);
+        ImageView image = (ImageView) rootView.findViewById(R.id.sample1);
+        GlideDrawableImageViewTarget target = new GlideDrawableImageViewTarget(image);
         Glide.with(getContext()).load(Integer.parseInt(sample_movie[0])).into(target);
         /*
         image = (ImageView) rootView.findViewById(R.id.sample2);
@@ -72,9 +71,8 @@ public class DetailCompositionFragment extends Fragment {
 
 
         Button button = (Button) view.findViewById(R.id.enter);
-        final EditText name = (EditText) view.findViewById(R.id.name);
-        final EditText desc = (EditText) view.findViewById(R.id.description);
-
+        final TextView description = rootView.findViewById(R.id.description);
+        description.setText(desc);
 
 
         button.setOnClickListener(onClickListener);
