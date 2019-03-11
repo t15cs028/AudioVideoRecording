@@ -1,7 +1,7 @@
 package com.example.database;
 
 public enum  Sample {
-    ID(Integer.valueOf(0), "ID"),
+    ID(Integer.valueOf(0), "id"),
     FILE_ID(Integer.valueOf(1), "file_id"),
     COMPOSITION_ID(Integer.valueOf(2), "composition_id");
 
